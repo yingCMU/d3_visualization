@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>D3 Page Template</title>
+	<!-- src="../src/package/dist/jquery-csv.js"> -->
+	<!-- <script data-main="scripts/app" src="../src/package/dist/require.js"></script> -->
+	<!-- <script type="module" src='../src/package/scripts/modules/data.js'></script> -->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.71/jquery.csv-0.71.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="./css/mystle.css">
+	<script src="https://d3js.org/d3.v4.js"></script>
+	<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+</head>
+
+<body>
+	<div id="my_dataviz"></div>
+
+	<script>
+
+		function loadJSON(callback) {
+
+			var xobj = new XMLHttpRequest();
+			xobj.overrideMimeType("application/json");
+			xobj.open('GET', '../data/industry.json', true); // Replace 'my_data' with the path to your file
+			xobj.onreadystatechange = function () {
+				if (xobj.readyState == 4 && xobj.status == "200") {
+					// Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
+					callback(xobj.responseText);
+				}
+			};
+			xobj.send(null);
+		}
+
+		function init() {
+			loadJSON(function (response) {
+				// Parse JSON string into object
+				data = JSON.parse(response);
+				load_circle();
+			});
+		}
+		window.onload = function () {
+			init();
+		};
+		function load_circle() {
+			const width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+			let height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+			height = Math.min(width, 500);
+			console.log('width', width, 'height', height);
+			arc = d3.arc()
+				.innerRadius(0)
+				.outerRadius(Math.min(width, height) / 2 - 1);
+			pie = d3.pie()
+				.sort(null)
+				.value(d => d.portion);
+
+			color = d3.scaleOrdinal()
+				.domain(data.map(d => d.name))
+				.range(d3.quantize(t => d3.interpolateSpectral(t * 0.8 + 0.1), data.length).reverse())
+			const arcs = pie(data);
+			const radius = Math.min(width, height) / 2 * 0.8;
+			arcLabel = d3.arc().innerRadius(radius).outerRadius(radius);
+			var svg = d3.select("body")
+				.append("svg").attr("viewBox", [-width / 2, -height / 2, width, height]);
+
+			svg.append("g")
+				.attr("stroke", "white")
+				.selectAll("path")
+				.data(arcs)
+				.join("path")
+				.attr("fill", d => color(d.data.label))
+				.attr("d", arc)
+				.append("title")
+				.text(d => `${d.data.label}: ${d.data.portion.toLocaleString()}`);
+
+			svg.append("g")
+				.attr("font-family", "sans-serif")
+				.attr("font-size", 12)
+				.attr("text-anchor", "middle")
+				.selectAll("text")
+				.data(arcs)
+				.join("text")
+				.attr("transform", d => `translate(${arcLabel.centroid(d)})`)
+				.call(text => text.append("tspan")
+					.attr("y", "-0.4em")
+					.attr("font-weight", "bold")
+					.text(d => d.data.label))
+				.call(text => text.filter(d => (d.endAngle - d.startAngle) > 0.25).append("tspan")
+					.attr("x", 0)
+					.attr("y", "0.7em")
+					.attr("fill-opacity", 0.7)
+					.text(d => d.data.portion.toLocaleString()));
+		}
+
+	</script>
+</body>
+
+</html>

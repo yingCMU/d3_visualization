@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>D3 Page Template</title>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.71/jquery.csv-0.71.min.js"></script>
+</head>
+
+<body>
+
+	<script type="text/javascript">
+
+		function csvToArray(str, delimiter = ",") {
+
+			// slice from start of text to the first \n index
+			// use split to create an array from string by delimiter
+			const headers = str.slice(0, str.indexOf("\n")).split(delimiter);
+
+			// slice from \n index + 1 to the end of the text
+			// use split to create an array of each csv value row
+			const rows = str.slice(str.indexOf("\n") + 1).split("\n");
+
+			// Map the rows
+			// split values from each row into an array
+			// use headers.reduce to create an object
+			// object properties derived from headers:values
+			// the object passed as an element of the array
+			const arr = rows.map(function (row) {
+				const values = row.split(delimiter);
+				const el = headers.reduce(function (object, header, index) {
+					object[header] = values[index];
+					return object;
+				}, {});
+				return el;
+			});
+
+			// return the array
+			return arr;
+		}
+		// sent a GET request to retrieve the CSV file contents
+		$.get("../data/population-by-age.csv", function (CSVdata) {
+			// CSVdata is populated with the file contents
+			//    / ready to be converted into an Array
+			let cleaned = csvToArray(CSVdata)
+			// let clean_CSVdata = CSVdata.replace(/[r|rn]/g, "n");
+			debugger;
+			// data = $.csv.toArray(clean_CSVdata);
+			console.log(cleaned)
+		});
+	</script>
+
+</body>
+
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>D3 Page Template</title>
+	<!-- src="../src/package/dist/jquery-csv.js"> -->
+	<script src="https://d3js.org/d3.v3.min.js"></script>
+	<script src="./d3-grid.js"></script>
+	<link rel="stylesheet" type="text/css" href="./css/mystle.css">
+</head>
+
+<body style="background-color:black;">
+	<script>
+		const width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+		const height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+		d3.csv("nodelist.csv", makeAGrid)
+		function makeAGrid(data) {
+			var scale =
+				d3.scaleLinear().domain([0, 5]).range([100, 400]);
+			var salaryScale = d3.scaleLinear().domain([0, 300000])
+				.range([1, 30]).clamp(true)
+			var grid = d3.gridLayout();
+			var griddedData = grid(data);
+			d3.select("svg").selectAll("circle")
+				.data(griddedData)
+				.enter()
+				.append("circle")
+				.attr("cx", d => scale(d.x))
+				.attr("cy", d => scale(d.y))
+				.attr("r", d => salaryScale(d.salary))
+				.style("fill", "#93C464");
+		}
+
+
+	</script>
+
+</body>
+
+</html>
