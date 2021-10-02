@@ -17,7 +17,8 @@ circle {
     stroke: steelblue;
 }
 .background {
-  background-color: black;
+  /* background-color: black; */
+  background-color: #414042;
 }
 .canvas {
   /* padding: 5pt; */
@@ -74,8 +75,9 @@ circle {
     /* border-width: 50pt; */
   }
   .rect_empty{
-    opacity: 100;
+    /* opacity: 100; */
     /* fill:gray; */
+    fill: #414042;
   }
   .rect_gov{
     fill:#939598;

@@ -28,7 +28,7 @@
         <script>
             var sets = [
                 { sets: ['A'], size: 60 },
-                { sets: ['B'], size: 60 },
+                { sets: ['B'], size: 120 },
                 { sets: ['C'], size: 60 },
                 { sets: ['A', 'B'], size: 2 },
                 { sets: ['A', 'C'], size: 2 },
@@ -67,6 +67,8 @@
                 })
 
                 .on("mousemove", function () {
+                    console.log(d3.event.pageX);
+                    debugger;
                     tooltip.style("left", (d3.event.pageX) + "px")
                         .style("top", (d3.event.pageY - 28) + "px");
                 })
