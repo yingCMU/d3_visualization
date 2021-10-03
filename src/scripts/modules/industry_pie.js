@@ -121,6 +121,7 @@ function load_industry_pie(data) {
         .data(data_ready)
         .enter()
         .append('text')
+        .attr('id','id_pie_text')
         .text(function (d) { console.log(d.data.key); return d.data.key })
         .attr('transform', function (d) {
             var pos = outerArc.centroid(d);
@@ -235,13 +236,15 @@ function load_industry_pie(data) {
     // .attr('width', 40)
     // .attr('height', 54)
     // .attr("xlink:href", "../data/images/labels/3_american-grassfed.png");
-    function show_pie(opacity, transition_time) {
+    function show_pie(opacity, label_opacity, transition_time) {
         d3.selectAll('#pie_id').transition().duration(transition_time).style("opacity", opacity);
-        debugger
-        if(opacity>0)
-        for(var i = 3; i < 3+csv_mock_data.length; i++){
-            pie_label_transform(transition_time, i)
+        d3.selectAll('#id_pie_text').transition().duration(transition_time).style("opacity", label_opacity);
+        if(opacity>0){
+            for(var i = 3; i < 3+csv_mock_data.length; i++){
+                pie_label_transform(transition_time, i)
+            }
         }
+
 
     }
     function pie_label_transform(transition_time, label_row_number) {
@@ -265,9 +268,9 @@ function load_industry_pie(data) {
             return
         }
 
-        show_pie(new_value ==1? 0.4:0, transition_time)
-        show_grid(new_value ==50? 1:0, transition_time)
-        show_venn(new_value ==100? 1:0, transition_time)
+        show_pie(new_value ==1? 0.4:0, new_value ==1? 1:0, transition_time*2)
+        show_grid(new_value ==50? 1:0, transition_time*2)
+        show_venn(new_value ==100? 1:0, transition_time*2)
             // d3
             //     .selectAll('#id_dimensions').transition().duration(transition_time).style("opacity", new_value ==100? 0.4:0);
 
