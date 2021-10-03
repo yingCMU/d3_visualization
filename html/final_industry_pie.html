@@ -8,32 +8,72 @@
 	<!-- <script data-main="scripts/app" src="../src/package/dist/require.js"></script> -->
 	<!-- <script type="module" src='../src/package/scripts/modules/data.js'></script> -->
 	<link rel="stylesheet" type="text/css" href="./css/mystle.css">
+	<script src="../src/package/dist/venn.js"></script>
 	<script src="https://d3js.org/d3.v4.js"></script>
 	<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 </head>
 
 <body class="background">
 	<div class="canvas">
-		<div class="d3_viz" id="id_industry_pie">
-			<div class="slidecontainer" >
-				<input type="range" min="1" max="100" value="1" id="id_slider">
-			</div>
-		</div>
-		<div class="d3_viz" id="id_transparency_grid">
-			<div class="slidecontainer" >
-				<input type="range" min="1" max="100" value="1" id="id_slider1">
-			</div>
-		</div>
-		<div class="d3_viz" id="id_dimensions">
-			<div class="slidecontainer" >
-				<input type="range" min="1" max="100" value="1" id="id_slider2">
-			</div>
+		<!-- <div id="id_labels" class="label_svg"> -->
+	</div>
+	<div class="d3_viz" id="id_industry_pie">
+		<div class="slidecontainer">
+			<input type="range" min="1" max="100" value="1" id="id_slider">
 		</div>
 	</div>
+	</div>
 
-	<script  type="module" >
-	import {  load_industry_pie} from "../src/scripts/modules/industry_pie.js";
+	<script type="module">
+		import { load_industry_pie } from "../src/scripts/modules/industry_pie.js";
+		import { create_grid } from "../src/scripts/modules/transparency_grid_module.js";
+		// import { create_venn } from "../src/scripts/modules/dimension_venn_module.js";
+		const num_of_layers = 5;
+		const num_of_labels = 50;
+		const boundary = [{ 'body': 'gov', 'num': 8 }, { 'body': 'for_profit', 'num': 18 }, { 'body': 'non_profit', 'num': num_of_labels }]
+
+		var points = [];
+		var rects = [];
+
+		function create_venn() {
+			const circle_opacity = .25;
+			// define sets and set set intersections
+			const circle_size = 60, overlapping = 10;
+			var sets = [
+				{ sets: ['A'], size: circle_size },
+				{ sets: ['B'], size: circle_size },
+				{ sets: ['C'], size: circle_size },
+				{ sets: ['A', 'B'], size: overlapping },
+				{ sets: ['A', 'C'], size: overlapping },
+				{ sets: ['C', 'B'], size: overlapping },
+			];
+			const width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+			const height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+
+			var chart = venn.VennDiagram().width(width)
+				.height(height);
+			var svg = d3.select("#id_industry_pie")
+				.select("svg").append("g")
+				.attr("id", "id_g_venn")
+				.style("opacity", 0)
+				.datum(sets).call(chart);
+			d3.selectAll("#id_g_venn g[data-venn-sets='A'] path")
+				.style("fill", "#2BB673").style("fill-opacity", circle_opacity);
+			d3.selectAll("#id_g_venn g[data-venn-sets='B'] path")
+				.style("fill", "#7F3F98").style("fill-opacity", circle_opacity);
+			d3.selectAll("#id_g_venn g[data-venn-sets='C'] path")
+				.style("fill", "#BE1E2D").style("fill-opacity", circle_opacity);
+		}
+
+		const block_width = 20;
+		const block_height = 50;
+		const grid_width = num_of_labels * (block_width + 1);
+		const grid_height = num_of_layers * (block_height + 1);
+
 		load_industry_pie()
+		create_grid()
+		create_venn()
+		debugger
 	</script>
 </body>
 

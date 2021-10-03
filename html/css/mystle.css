@@ -12,6 +12,9 @@ svg {
     height: 100%;
 }
 
+label_class {
+}
+
 circle {
     fill: none;
     stroke: steelblue;
@@ -22,6 +25,9 @@ circle {
 }
 .canvas {
   /* padding: 5pt; */
+}
+.label_svg {
+  float:left
 }
 /* industry circle */
 .slidecontainer {

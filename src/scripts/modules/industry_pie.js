@@ -1,3 +1,6 @@
+import { create_grid, show_grid } from "./transparency_grid_module.js";
+// import { create_venn, show_venn } from "./dimension_venn_module.js";
+const transition_time = 400
 function load_industry_pie(data) {
     const start_year = 1990;
     const current_year = 2021;
@@ -21,7 +24,6 @@ function load_industry_pie(data) {
             this.value = 100
         }
         new_value=parseInt(this.value)
-        debugger
         switch_view(old_value,new_value )
         old_value=new_value
     });
@@ -36,7 +38,8 @@ function load_industry_pie(data) {
         .attr("width", width)
         .attr("height", height)
         .append("g")
-        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+        .attr('id','id_g_pie')
+        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
     var industry_index = {
         "Energy/Environment": 0,
         "Social": 1,
@@ -83,7 +86,7 @@ function load_industry_pie(data) {
             .enter()
             .append('path')
             .attr('d', arc)
-            // .attr('id', 'pie_id')
+            .attr('id', 'pie_id')
             .attr('fill', function (d) {
                 return i == 0 ? color(d.data.key) : "white";
                 // console.log(d.data);
@@ -92,7 +95,7 @@ function load_industry_pie(data) {
             })
             .attr("stroke", "white")
             .style("stroke-width", "1px")
-            .style("opacity", i == 0 ? 0.4 : 0.5);
+            .style("opacity", 0.4);
     }
 
     // Add the polylines between chart and labels:
@@ -170,6 +173,12 @@ function load_industry_pie(data) {
     }
     var estimating_labels_per_industry_per_year = 4;
     var label_angle_gap_to_avoid_overlapping = Math.PI / Object.keys(memorize_label_count_per_year).length / estimating_labels_per_industry_per_year;
+    // var label_svg = d3.select("#id_labels")
+    //     .append("svg")
+    //     .attr("width", width)
+    //     .attr("height", height)
+    //     .append("g")
+    //     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
     for (var i = 0; i < csv_mock_data.length; i++) {
         var label_data = csv_mock_data[i]
         var industry_pie_params = data_ready[industry_index[label_data.industry]]
@@ -180,6 +189,8 @@ function load_industry_pie(data) {
             .attr('xlink:href', '../data/images/labels/' + label_data.row + '.png')
             .attr('width', label_width)
             .attr('height', label_height)
+            .attr('id', 'id_label_'+label_data.row)
+            .attr('class', 'label_class')
             .attr('transform', function (d) {
                 // var pos = outerArc.centroid(d);
                 // var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2
@@ -215,20 +226,24 @@ function load_industry_pie(data) {
     // .attr('width', 40)
     // .attr('height', 54)
     // .attr("xlink:href", "../data/images/labels/3_american-grassfed.png");
+
+    function show_venn(opacity, transition_time) {
+        var svg = d3.select("#id_industry_pie")
+            .select("svg")
+            .select("#id_g_venn")
+            .transition().duration(transition_time).style("opacity", opacity);
+
+    }
     function switch_view(old_value, new_value) {
-        debugger;
-        if (old_value == 1 && new_value !== 1) {
-            d3
-                .selectAll('#id_industry_pie').transition().duration(400).style("opacity", .0);
+        if(old_value==new_value){
+            return
         }
-        if (old_value == 50 && new_value !== 50) {
             d3
-                .selectAll('#id_transparency_grid').transition().duration(400).style("opacity", .0);
-        }
-        if (old_value == 100 && new_value !== 100) {
-            d3
-                .selectAll('#id_dimensions').transition().duration(400).style("opacity", .0);
-        }
+                .selectAll('#pie_id').transition().duration(transition_time).style("opacity", new_value ==1? 0.4:0);
+                show_grid(new_value ==50? 1:0, transition_time)
+                show_venn(new_value ==100? 1:0, transition_time)
+            // d3
+            //     .selectAll('#id_dimensions').transition().duration(transition_time).style("opacity", new_value ==100? 0.4:0);
 
         // .remove();
     }
