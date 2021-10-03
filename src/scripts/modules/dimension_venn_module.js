@@ -1,4 +1,4 @@
-import venn from "../../package/dist/venn.js";
+import  "../../package/dist/venn.js";
 
 function create_venn() {
 

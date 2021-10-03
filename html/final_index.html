@@ -27,7 +27,6 @@
 	<script type="module">
 		import { load_industry_pie } from "../src/scripts/modules/industry_pie.js";
 		import { create_grid } from "../src/scripts/modules/transparency_grid_module.js";
-		// import { create_venn } from "../src/scripts/modules/dimension_venn_module.js";
 		const num_of_layers = 5;
 		const num_of_labels = 50;
 		const boundary = [{ 'body': 'gov', 'num': 8 }, { 'body': 'for_profit', 'num': 18 }, { 'body': 'non_profit', 'num': num_of_labels }]
@@ -38,7 +37,7 @@
 		function create_venn() {
 			const circle_opacity = .25;
 			// define sets and set set intersections
-			const circle_size = 60, overlapping = 10;
+			const circle_size = 60, overlapping = 20;
 			var sets = [
 				{ sets: ['A'], size: circle_size },
 				{ sets: ['B'], size: circle_size },
@@ -57,11 +56,11 @@
 				.attr("id", "id_g_venn")
 				.style("opacity", 0)
 				.datum(sets).call(chart);
-			d3.selectAll("#id_g_venn g[data-venn-sets='A'] path")
+			d3.selectAll("#id_g_venn g[data-venn-sets='A'] path").lower()
 				.style("fill", "#2BB673").style("fill-opacity", circle_opacity);
-			d3.selectAll("#id_g_venn g[data-venn-sets='B'] path")
+			d3.selectAll("#id_g_venn g[data-venn-sets='B'] path").lower()
 				.style("fill", "#7F3F98").style("fill-opacity", circle_opacity);
-			d3.selectAll("#id_g_venn g[data-venn-sets='C'] path")
+			d3.selectAll("#id_g_venn g[data-venn-sets='C'] path").lower()
 				.style("fill", "#BE1E2D").style("fill-opacity", circle_opacity);
 		}
 
@@ -72,7 +71,9 @@
 
 		load_industry_pie()
 		create_grid()
+
 		create_venn()
+
 		debugger
 	</script>
 </body>

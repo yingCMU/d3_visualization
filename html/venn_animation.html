@@ -110,6 +110,7 @@
             d3.selectAll("#rings .venn-circle")
                 .on("mouseover", function (d, i) {
                     var node = d3.select(this).transition();
+                    debugger
                     node.select("path").style("fill-opacity", .2);
                     node.select("text").style("font-weight", "100")
                         .style("font-size", "36px");

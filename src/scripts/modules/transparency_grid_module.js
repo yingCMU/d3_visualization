@@ -11,11 +11,12 @@ var rects = [];
 
 // var width = 960,
 // 	height = 500;
-const block_width = 20;
-const block_height = 50;
+const block_width = 30;
+const block_height = 60;
 const grid_width = num_of_labels * (block_width + 1);
 const grid_height = num_of_layers * (block_height + 1);
-
+var total_width = num_of_labels * block_width
+var total_height = num_of_layers * block_height
 // d3.gridLayout = () => {
 //     function processGrid(data) {
 //         var rows = Math.ceil(Math.sqrt(data.length));
@@ -74,20 +75,26 @@ function get_color_class(i) {
 
 function create_grid() {
     // var svg = d3.select("#id_industry_pie").select("svg")
+
+    // var svg = d3.select("#id_industry_pie")
+    // .select("svg")
+    // .append("g")
+    // .attr("id","id_g_label_row")
+    // .style("opacity", 0)
+    // .attr("transform", "translate(" + (width ) / 2 + "," + (height ) / 2 + ")");
     var svg = d3.select("#id_industry_pie")
     .select("svg")
     .append("g")
     .attr("id","id_g_grid")
     .style("opacity", 0)
-    .attr("transform", "translate(" + (width - num_of_labels * block_width) / 2 + "," + (height - num_of_layers * block_height) / 2 + ")");
+    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
     for (var l = 0; l < num_of_layers; l++) {
         for (var i = 0; i < num_of_labels; ++i) {
             var newPerson = { x: block_width * i, y: l * block_height };
             svg
-            // /select("g")
             .append('rect').attr('id','id_rect_'+l+'-'+i).attr("class", get_color_class(i))//.enter()
-                .attr('x', block_width * i)
-                .attr('y', l * block_height)
+                .attr('x', block_width * i-total_width/2)
+                .attr('y', l * block_height-total_height/2)
                 .attr("width", block_width)
                 .attr("height", block_height)
                 .attr("stroke-width", "1pt")
@@ -120,8 +127,27 @@ function create_grid() {
 function show_grid(opacity, transition_time) {
     var svg = d3.select("#id_industry_pie")
     .select("svg")
-    .select("#id_g_grid")
+    .select("#id_g_grid").lower()
     .transition().duration(transition_time).style("opacity", opacity);
+    if(opacity>0)
+    for(var i = 3; i < 3+num_of_labels; i++){
+        label_transform(transition_time, i)
+    }
 
 }
-export { create_grid, show_grid };
+function label_transform(transition_time, label_row_number) {
+    var svg_top_cell = d3.select("#id_rect_0-"+(label_row_number-3))
+    var svg_label = d3.select("#id_label_"+label_row_number).raise()
+    .attr("x",0)
+    .attr("y",0)
+    // .attr("x",svg_top_cell.attr('x'))
+    // .attr('y',-total_height/2-block_height*0.7)
+    // .attr("transform","translate(0,0)")
+    .transition()
+    .duration(transition_time*3)
+    .attr("transform", "translate(" + svg_top_cell.attr('x') +","+ (-total_height/2-block_height*0.7)+ ")")
+    //  .style("left",block_width).style("top",0)
+    console.log('attrx',svg_top_cell.attr('x'))
+    debugger
+}
+export { create_grid, show_grid ,label_transform};
