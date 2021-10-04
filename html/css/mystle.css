@@ -32,10 +32,13 @@ circle {
 }
 /* industry circle */
 .slidecontainer {
-    width: 20%; /* Width of the outside container */
-    padding-top: 5pt;
+    width: 8%; /* Width of the outside container */
+    /* height: 100pt; */
+    padding-right: 50pt;
+    padding-top: 10pt;
     float:right;
   }
+
 .d3_viz {
     width: 100%; /* Width of the outside container */
     float:left;
@@ -45,6 +48,7 @@ circle {
   .slider {
     -webkit-appearance: none;  /* Override default CSS styles */
     appearance: none;
+    border-radius: 5px;
     width: 100%; /* Full-width */
     height: 25px; /* Specified height */
     background: #d3d3d3; /* Grey background */
@@ -63,16 +67,19 @@ circle {
   .slider::-webkit-slider-thumb {
     -webkit-appearance: none; /* Override default look */
     appearance: none;
+    border-radius: 50%;
     width: 25px; /* Set a specific slider handle width */
     height: 25px; /* Slider handle height */
-    background: #04AA6D; /* Green background */
+    background: black; /* Green background */
     cursor: pointer; /* Cursor on hover */
   }
 
   .slider::-moz-range-thumb {
     width: 25px; /* Set a specific slider handle width */
     height: 25px; /* Slider handle height */
-    background: #04AA6D; /* Green background */
+    border-radius: 50%;
+
+    background: black; /* Green background */
     cursor: pointer; /* Cursor on hover */
   }
 

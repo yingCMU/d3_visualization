@@ -19,7 +19,7 @@
 	</div>
 	<div class="d3_viz" id="id_industry_pie">
 		<div class="slidecontainer">
-			<input type="range" min="1" max="100" value="1" id="id_slider">
+			<input class="slider" type="range" min="1" max="100" value="1" id="id_slider">
 		</div>
 	</div>
 	</div>
@@ -35,16 +35,16 @@
 		var rects = [];
 
 		function create_venn() {
-			const circle_opacity = .25;
+			const circle_opacity = .15;
 			// define sets and set set intersections
 			const circle_size = 60, overlapping = 20;
 			var sets = [
-				{ sets: ['A'], size: circle_size },
-				{ sets: ['B'], size: circle_size },
-				{ sets: ['C'], size: circle_size },
-				{ sets: ['A', 'B'], size: overlapping },
-				{ sets: ['A', 'C'], size: overlapping },
-				{ sets: ['C', 'B'], size: overlapping },
+				{ sets: ['Engery&Environment'], size: circle_size },
+				{ sets: ['Socail'], size: circle_size },
+				{ sets: ['Food Quality'], size: circle_size },
+				{ sets: ['Engery&Environment', 'Socail'], size: overlapping },
+				{ sets: ['Engery&Environment', 'Food Quality'], size: overlapping },
+				{ sets: ['Food Quality', 'Socail'], size: overlapping },
 			];
 			const width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
 			const height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
@@ -56,12 +56,14 @@
 				.attr("id", "id_g_venn")
 				.style("opacity", 0)
 				.datum(sets).call(chart);
-			d3.selectAll("#id_g_venn g[data-venn-sets='A'] path").lower()
+			d3.selectAll("#id_g_venn g[data-venn-sets='Engery&Environment']").lower()
 				.style("fill", "#2BB673").style("fill-opacity", circle_opacity);
-			d3.selectAll("#id_g_venn g[data-venn-sets='B'] path").lower()
-				.style("fill", "#7F3F98").style("fill-opacity", circle_opacity);
-			d3.selectAll("#id_g_venn g[data-venn-sets='C'] path").lower()
+			// d3.selectAll("#id_g_venn g[data-venn-sets='Engery&Environment'] path").lower()
+			// 	.style("fill", "#2BB673").style("fill-opacity", circle_opacity);
+			d3.selectAll("#id_g_venn g[data-venn-sets='Socail'] path").lower()
 				.style("fill", "#BE1E2D").style("fill-opacity", circle_opacity);
+			d3.selectAll("#id_g_venn g[data-venn-sets='Food Quality'] path").lower()
+				.style("fill", "#7F3F98").style("fill-opacity", circle_opacity);
 		}
 
 		const block_width = 20;
