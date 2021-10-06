@@ -1,13 +1,13 @@
 import { label_transform, show_grid, create_grid } from "./transparency_grid_module.js";
 function load_industry_pie(data) {
-    const start_year = 1990;
-    const current_year = 2021;
+    const start_year = 1950;
+    const latest_year = 2016;
     const label_height = 30
     const label_width = 30;
     const industry_label_color = 'white';
     const width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
     const height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
-    const num_of_layers = current_year - start_year;
+    const num_of_layers = latest_year - start_year;
     const margin = 40
 
 
@@ -27,18 +27,16 @@ function load_industry_pie(data) {
 
     var industry_index = {
         "Unkown": 0,
-        "Social": 1,
-        "Service": 2,
-        "Food_Agriculture": 3,
-        "Manufacturing": 4
+        "Service": 1,
+        "Food_Agriculture": 2,
+        "Manufacturing": 3
     }
     // Create dummy data
     var data = {
-        "Unkown": 20,
-        "Social": 20,
-        "Service": 20,
-        "Food_Agriculture": 20,
-        "Manufacturing": 20
+        "Unkown": 25,
+        "Service": 25,
+        "Food_Agriculture": 25,
+        "Manufacturing": 25
     };
 
     // set the color scale
@@ -122,42 +120,14 @@ function load_industry_pie(data) {
             return (midangle < Math.PI ? 'start' : 'end')
         })
 
-    var mock_data = [
-        {
-            'row': 3,
-            'year': 1991,
-            'industry': 'Social'
-        },
-        {
-            'row': 4,
-            'year': 1999,
-            'industry': 'Manufacturing'
-        },
-        {
-            'row': 5,
-            'year': 1994,
-            'industry': 'Service'
-        },
-        {
-            'row': 6,
-            'year': 2010,
-            'industry': 'Farming/Agriculture'
-        },
-        {
-            'row': 7,
-            'year': 2016,
-            'industry': 'Energy/Environment'
-        },
-    ]
-    // var imgs = svg.selectAll("image").data([0]);
+
     var memorize_label_count_per_year = {
         "Unkown": {},
-        "Social": {},
         "Service": {},
         "Food_Agriculture": {},
         "Manufacturing": {}
     }
-    var estimating_labels_per_industry_per_year = 4;
+    var estimating_labels_per_industry_per_year = 9;
     var label_angle_gap_to_avoid_overlapping = Math.PI / Object.keys(memorize_label_count_per_year).length / estimating_labels_per_industry_per_year;
     // var label_svg = d3.select("#id_labels")
     //     .append("svg")
@@ -180,6 +150,9 @@ function load_industry_pie(data) {
         //   width: 128,
         //   height: 128
         // });
+
+
+        var year = parseInt(label.Year)
         var myimage = svg
             .append('svg:image').raise()
             .attr('xlink:href', '../data/images/labels/' + label.Row + '.png')
@@ -193,27 +166,32 @@ function load_industry_pie(data) {
                 // pos[0] = radius * 0.99 * (midangle < Math.PI ? 1 : -1);
                 // // return 'translate(' + pos + ')';
                 // var usable_angel = industry_pie_params.endAngle- industry_pie_params.startAngle
-                if (!(label.Year in memorize_label_count_per_year[industry])) {
-                    memorize_label_count_per_year[industry][label.Year] = 0
+                if (!(year in memorize_label_count_per_year[industry])) {
+                    memorize_label_count_per_year[industry][year] = 0
                 }
-                var num_of_existing_labels = memorize_label_count_per_year[industry][label.Year]
+                var num_of_existing_labels = memorize_label_count_per_year[industry][year]
                 console.log(num_of_existing_labels * label_angle_gap_to_avoid_overlapping, (num_of_existing_labels + 1) * label_angle_gap_to_avoid_overlapping)
 
                 var label_png_arc = d3.arc()
-                    .innerRadius(radius / num_of_layers * (label.Year - start_year))         // This is the size of the donut hole
-                    .outerRadius(radius / num_of_layers * (label.Year - start_year))
+                    .innerRadius(radius / num_of_layers * (year - start_year))         // This is the size of the donut hole
+                    .outerRadius(radius / num_of_layers * (year - start_year))
                     .startAngle(industry_pie_params.startAngle + num_of_existing_labels * label_angle_gap_to_avoid_overlapping)
                     .endAngle(industry_pie_params.startAngle + (num_of_existing_labels + 1) * label_angle_gap_to_avoid_overlapping);
                 // .startAngle(industry_pie_params.startAngle)
                 // .endAngle(industry_pie_params.endAngle)
-                memorize_label_count_per_year[industry][label.Year]++
-                var t = `translate(${label_png_arc.centroid(industry_pie_params)})`
+                memorize_label_count_per_year[industry][year]++
+                var t = `translate(${label_png_arc.centroid()})`
                 transform_values[label.Row] = t
+                if (label.Row == '7' || label.Row == '27'){
+                    console.log(label.Row, label.Industry, 'start_angle:', industry_pie_params.startAngle + num_of_existing_labels * label_angle_gap_to_avoid_overlapping,
+                    'end_angle:', industry_pie_params.startAngle + (num_of_existing_labels + 1) * label_angle_gap_to_avoid_overlapping,
+                    'end_angle:', industry_pie_params.startAngle + (num_of_existing_labels + 1) * label_angle_gap_to_avoid_overlapping,
+                    t
+                )
+                }
+
                 return t
-                // return `translate(${arcLabel.centroid(d)})`
             })
-        // .attr('x', x)
-        // .attr('y', y)
     }
 
     return transform_values
@@ -243,4 +221,4 @@ function show_venn(opacity, transition_time) {
         .transition().duration(transition_time).style("opacity", opacity);
 
 }
-export { load_industry_pie , show_pie};
+export { load_industry_pie, show_pie };
