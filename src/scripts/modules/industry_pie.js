@@ -1,5 +1,4 @@
 import { label_transform, show_grid, create_grid } from "./transparency_grid_module.js";
-const transition_time = 400
 function load_industry_pie(data) {
     const start_year = 1990;
     const current_year = 2021;
@@ -10,22 +9,8 @@ function load_industry_pie(data) {
     const height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
     const num_of_layers = current_year - start_year;
     const margin = 40
-    var rangeInput = document.getElementById("id_slider");
-    var old_value = 1
-    var new_value = 1
 
-    rangeInput.addEventListener('mouseup', function () {
-        if (this.value < 25) {
-            this.value = 1
-        } else if (this.value < 75) {
-            this.value = 50
-        } else {
-            this.value = 100
-        }
-        new_value = parseInt(this.value)
-        switch_view(old_value, new_value)
-        old_value = new_value
-    });
+
 
 
     // The radius of the pieplot is half the width or half the height (smallest one). I subtract a bit of margin.
@@ -39,19 +24,20 @@ function load_industry_pie(data) {
         .append("g")
         .attr('id', 'id_g_pie')
         .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
+
     var industry_index = {
-        "Energy/Environment": 0,
+        "Unkown": 0,
         "Social": 1,
         "Service": 2,
-        "Farming/Agriculture": 3,
+        "Food_Agriculture": 3,
         "Manufacturing": 4
     }
     // Create dummy data
     var data = {
-        "Energy/Environment": 20,
+        "Unkown": 20,
         "Social": 20,
         "Service": 20,
-        "Farming/Agriculture": 20,
+        "Food_Agriculture": 20,
         "Manufacturing": 20
     };
 
@@ -136,7 +122,7 @@ function load_industry_pie(data) {
             return (midangle < Math.PI ? 'start' : 'end')
         })
 
-    var csv_mock_data = [
+    var mock_data = [
         {
             'row': 3,
             'year': 1991,
@@ -165,10 +151,10 @@ function load_industry_pie(data) {
     ]
     // var imgs = svg.selectAll("image").data([0]);
     var memorize_label_count_per_year = {
-        "Energy/Environment": {},
+        "Unkown": {},
         "Social": {},
         "Service": {},
-        "Farming/Agriculture": {},
+        "Food_Agriculture": {},
         "Manufacturing": {}
     }
     var estimating_labels_per_industry_per_year = 4;
@@ -179,11 +165,13 @@ function load_industry_pie(data) {
     //     .attr("height", height)
     //     .append("g")
     //     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
-    var transform_values = []
+    var transform_values = {}
 
-    for (var i = 0; i < csv_mock_data.length; i++) {
-        var label_data = csv_mock_data[i]
-        var industry_pie_params = data_ready[industry_index[label_data.industry]]
+    for (var i = 0; i < label_data.length; i++) {
+        var label = label_data[i]
+        var all_industries = label.Industry.split(',')
+        var industry = name_dict[all_industries[0]];
+        var industry_pie_params = data_ready[industry_index[industry]]
         // svg.append('svg:image')
         // .attr({
         //   'xlink:href': 'http://www.iconpng.com/png/beautiful_flat_color/computer.png',  // can also add svg file here
@@ -194,10 +182,10 @@ function load_industry_pie(data) {
         // });
         var myimage = svg
             .append('svg:image').raise()
-            .attr('xlink:href', '../data/images/labels/' + label_data.row + '.png')
+            .attr('xlink:href', '../data/images/labels/' + label.Row + '.png')
             .attr('width', label_width)
             .attr('height', label_height)
-            .attr('id', 'id_label_' + label_data.row)
+            .attr('id', 'id_label_' + label.Row)
             .attr('class', 'label_class')
             .attr('transform', function (d) {
                 // var pos = outerArc.centroid(d);
@@ -205,22 +193,22 @@ function load_industry_pie(data) {
                 // pos[0] = radius * 0.99 * (midangle < Math.PI ? 1 : -1);
                 // // return 'translate(' + pos + ')';
                 // var usable_angel = industry_pie_params.endAngle- industry_pie_params.startAngle
-                if (!(label_data.year in memorize_label_count_per_year[label_data.industry])) {
-                    memorize_label_count_per_year[label_data.industry][label_data.year] = 0
+                if (!(label.Year in memorize_label_count_per_year[industry])) {
+                    memorize_label_count_per_year[industry][label.Year] = 0
                 }
-                var num_of_existing_labels = memorize_label_count_per_year[label_data.industry][label_data.year]
+                var num_of_existing_labels = memorize_label_count_per_year[industry][label.Year]
                 console.log(num_of_existing_labels * label_angle_gap_to_avoid_overlapping, (num_of_existing_labels + 1) * label_angle_gap_to_avoid_overlapping)
 
                 var label_png_arc = d3.arc()
-                    .innerRadius(radius / num_of_layers * (label_data.year - start_year))         // This is the size of the donut hole
-                    .outerRadius(radius / num_of_layers * (label_data.year - start_year))
+                    .innerRadius(radius / num_of_layers * (label.Year - start_year))         // This is the size of the donut hole
+                    .outerRadius(radius / num_of_layers * (label.Year - start_year))
                     .startAngle(industry_pie_params.startAngle + num_of_existing_labels * label_angle_gap_to_avoid_overlapping)
                     .endAngle(industry_pie_params.startAngle + (num_of_existing_labels + 1) * label_angle_gap_to_avoid_overlapping);
                 // .startAngle(industry_pie_params.startAngle)
                 // .endAngle(industry_pie_params.endAngle)
-                memorize_label_count_per_year[label_data.industry][label_data.year]++
+                memorize_label_count_per_year[industry][label.Year]++
                 var t = `translate(${label_png_arc.centroid(industry_pie_params)})`
-                transform_values.push(t)
+                transform_values[label.Row] = t
                 return t
                 // return `translate(${arcLabel.centroid(d)})`
             })
@@ -228,53 +216,31 @@ function load_industry_pie(data) {
         // .attr('y', y)
     }
 
-    // .attr('x', width/2)
-    // .attr('y', height/2);
-    // imgs.enter().append("svg:image")
-    // .attr('x', width/2)
-    // .attr('y', height/2)
-    // .attr('width', 40)
-    // .attr('height', 54)
-    // .attr("xlink:href", "../data/images/labels/3_american-grassfed.png");
-    function show_pie(opacity, label_opacity, transition_time) {
-        d3.selectAll('#pie_id').transition().duration(transition_time).style("opacity", opacity);
-        d3.selectAll('#id_pie_text').transition().duration(transition_time).style("opacity", label_opacity);
-        if (opacity > 0) {
-            for (var i = 3; i < 3 + csv_mock_data.length; i++) {
-                pie_label_transform(transition_time, i)
-            }
+    return transform_values
+}
+function show_pie(opacity, label_opacity, transition_time, industry_pie_transform_values) {
+    d3.selectAll('#pie_id').transition().duration(transition_time).style("opacity", opacity);
+    d3.selectAll('#id_pie_text').transition().duration(transition_time).style("opacity", label_opacity);
+    if (opacity > 0) {
+        for (const [row, transform_value] of Object.entries(industry_pie_transform_values)) {
+            pie_label_transform(transition_time, row, transform_value)
         }
-
-
-    }
-    function pie_label_transform(transition_time, label_row_number) {
-        var svg_label = d3.select("#id_label_" + label_row_number).raise()
-            .attr("x", 0)
-            .attr("y", 0)
-            .transition()
-            .duration(transition_time * 3)
-            .attr("transform", transform_values[label_row_number - 3])
-        //  .style("left",block_width).style("top",0)
-    }
-    function show_venn(opacity, transition_time) {
-        var svg = d3.select("#id_industry_pie")
-            .select("svg")
-            .select("#id_g_venn")
-            .transition().duration(transition_time).style("opacity", opacity);
-
-    }
-    function switch_view(old_value, new_value) {
-        if (old_value == new_value) {
-            return
-        }
-
-        show_pie(new_value == 1 ? 0.4 : 0, new_value == 1 ? 1 : 0, transition_time * 2)
-        show_grid(new_value == 50 ? 1 : 0, transition_time * 2)
-        show_venn(new_value == 100 ? 0.45 : 0, transition_time * 2)
-        // d3
-        //     .selectAll('#id_dimensions').transition().duration(transition_time).style("opacity", new_value ==100? 0.4:0);
-
-        // .remove();
     }
 }
-export { load_industry_pie };
+function pie_label_transform(transition_time, label_row_number, transform_value) {
+    var svg_label = d3.select("#id_label_" + label_row_number).raise()
+        .attr("x", 0)
+        .attr("y", 0)
+        .transition()
+        .duration(transition_time * 3)
+        .attr("transform", transform_value)
+    //  .style("left",block_width).style("top",0)
+}
+function show_venn(opacity, transition_time) {
+    var svg = d3.select("#id_industry_pie")
+        .select("svg")
+        .select("#id_g_venn")
+        .transition().duration(transition_time).style("opacity", opacity);
+
+}
+export { load_industry_pie , show_pie};

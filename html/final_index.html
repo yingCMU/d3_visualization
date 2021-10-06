@@ -23,60 +23,126 @@
 		</div>
 	</div>
 	</div>
+	<script>
+		const num_of_grid_layers = 5;
+		var lable_row_to_grid_index
+		var lable_industry_pie_transform_values
+		var old_value = 1
+		var new_value = 1
+		var num_of_labels
 
-	<script type="module">
-		import { load_industry_pie } from "../src/scripts/modules/industry_pie.js";
-		import { create_grid } from "../src/scripts/modules/transparency_grid_module.js";
-		const num_of_layers = 5;
-		const num_of_labels = 50;
-		const boundary = [{ 'body': 'gov', 'num': 8 }, { 'body': 'for_profit', 'num': 18 }, { 'body': 'non_profit', 'num': num_of_labels }]
-
-		var points = [];
-		var rects = [];
-
-		function create_venn() {
-			const circle_opacity = .15;
-			// define sets and set set intersections
-			const circle_size = 60, overlapping = 20;
-			var sets = [
-				{ sets: ['Engery&Environment'], size: circle_size },
-				{ sets: ['Socail'], size: circle_size },
-				{ sets: ['Food Quality'], size: circle_size },
-				{ sets: ['Engery&Environment', 'Socail'], size: overlapping },
-				{ sets: ['Engery&Environment', 'Food Quality'], size: overlapping },
-				{ sets: ['Food Quality', 'Socail'], size: overlapping },
-			];
-			const width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
-			const height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
-
-			var chart = venn.VennDiagram().width(width)
-				.height(height);
-			var svg = d3.select("#id_industry_pie")
-				.select("svg").append("g")
-				.attr("id", "id_g_venn")
-				.style("opacity", 0)
-				.datum(sets).call(chart);
-			d3.selectAll("#id_g_venn g[data-venn-sets='Engery&Environment']").lower()
-				.style("fill", "#2BB673").style("fill-opacity", circle_opacity);
-			// d3.selectAll("#id_g_venn g[data-venn-sets='Engery&Environment'] path").lower()
-			// 	.style("fill", "#2BB673").style("fill-opacity", circle_opacity);
-			d3.selectAll("#id_g_venn g[data-venn-sets='Socail'] path").lower()
-				.style("fill", "#BE1E2D").style("fill-opacity", circle_opacity);
-			d3.selectAll("#id_g_venn g[data-venn-sets='Food Quality'] path").lower()
-				.style("fill", "#7F3F98").style("fill-opacity", circle_opacity);
+		const block_width = 30;
+		const block_height = 60;
+		var total_grid_height = num_of_grid_layers * block_height
+		var total_grid_width
+		const transition_time = 400
+		var label_data
+		var name_dict = {
+			"In": "For-Profit",
+			"Gov": "Goverment",
+			"Nonp": "Non-Profit",
+			"Fa+A": "Food_Agriculture",
+			"Manf": "Manufacturing",
+			"Serv": "Service",
+			"Soc": "Social",
+			"E+En": "Environemnt_Energy",
+			"Unkown": "Unkown"
 		}
 
-		const block_width = 20;
-		const block_height = 50;
-		const grid_width = num_of_labels * (block_width + 1);
-		const grid_height = num_of_layers * (block_height + 1);
+	</script>
 
-		load_industry_pie()
-		create_grid()
 
-		create_venn()
+	<script type="module">
 
-		debugger
+		import { load_industry_pie, show_pie } from "../src/scripts/modules/industry_pie.js";
+		import { create_grid, show_grid, label_transform } from "../src/scripts/modules/transparency_grid_module.js";
+
+		// function create_venn() {
+		// 	const circle_opacity = .15;
+		// 	// define sets and set set intersections
+		// 	const circle_size = 60, overlapping = 20;
+		// 	var sets = [
+		// 		{ sets: ['Engery&Environment'], size: circle_size },
+		// 		{ sets: ['Socail'], size: circle_size },
+		// 		{ sets: ['Food Quality'], size: circle_size },
+		// 		{ sets: ['Engery&Environment', 'Socail'], size: overlapping },
+		// 		{ sets: ['Engery&Environment', 'Food Quality'], size: overlapping },
+		// 		{ sets: ['Food Quality', 'Socail'], size: overlapping },
+		// 	];
+		// 	const width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+		// 	const height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+
+		// 	var chart = venn.VennDiagram().width(width)
+		// 		.height(height);
+		// 	var svg = d3.select("#id_industry_pie")
+		// 		.select("svg").append("g")
+		// 		.attr("id", "id_g_venn")
+		// 		.style("opacity", 0)
+		// 		.datum(sets).call(chart);
+		// 	d3.selectAll("#id_g_venn g[data-venn-sets='Engery&Environment']").lower()
+		// 		.style("fill", "#2BB673").style("fill-opacity", circle_opacity);
+		// 	// d3.selectAll("#id_g_venn g[data-venn-sets='Engery&Environment'] path").lower()
+		// 	// 	.style("fill", "#2BB673").style("fill-opacity", circle_opacity);
+		// 	d3.selectAll("#id_g_venn g[data-venn-sets='Socail'] path").lower()
+		// 		.style("fill", "#BE1E2D").style("fill-opacity", circle_opacity);
+		// 	d3.selectAll("#id_g_venn g[data-venn-sets='Food Quality'] path").lower()
+		// 		.style("fill", "#7F3F98").style("fill-opacity", circle_opacity);
+		// }
+
+		function switch_view(old_value, new_value, grid_index, industry_pie_transform_values) {
+			if (old_value == new_value) {
+				return
+			}
+
+			show_pie(new_value == 1 ? 0.4 : 0, new_value == 1 ? 1 : 0, transition_time * 2, industry_pie_transform_values)
+			show_grid(new_value == 50 ? 1 : 0, transition_time * 2, grid_index)
+			// show_venn(new_value == 100 ? 0.45 : 0, transition_time * 2)
+			// d3
+			//     .selectAll('#id_dimensions').transition().duration(transition_time).style("opacity", new_value ==100? 0.4:0);
+
+			// .remove();
+		}
+
+		// function init() {
+		d3.csv("../../data/EcoLabel Research - clean_data.csv", function (data) {
+			data.shift()
+			num_of_labels = data.length
+			label_data = data
+			total_grid_width = num_of_labels * block_width
+
+			lable_industry_pie_transform_values = load_industry_pie()
+			lable_row_to_grid_index = create_grid(label_data, name_dict)
+			console.log('lable_row_to_grid_index', lable_row_to_grid_index)
+			var rangeInput = document.getElementById("id_slider");
+			rangeInput.addEventListener('mouseup', function () {
+				if (this.value < 25) {
+					this.value = 1
+				} else if (this.value < 75) {
+					this.value = 50
+				} else {
+					this.value = 100
+				}
+				new_value = parseInt(this.value)
+				switch_view(old_value, new_value, lable_row_to_grid_index, lable_industry_pie_transform_values)
+				old_value = new_value
+			});
+
+		})
+
+		// }
+		// window.onload = function () {
+		// 	init();
+
+		// };
+
+
+
+
+
+
+
+		// create_venn()
+
 	</script>
 </body>
 

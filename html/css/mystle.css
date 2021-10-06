@@ -93,12 +93,23 @@ circle {
     /* fill:gray; */
     fill: #414042;
   }
-  .rect_gov{
-    fill:#939598;
+  .rect_gap{
+    /* opacity: 100; */
+    /* fill:gray; */
+    stroke-opacity: 0;
+    fill: #414042;
   }
-  .rect_for_profit{
+  .rect_Manufacturing{
+    fill:#939598;
+    stroke-opacity: 1;
+
+  }
+  .rect_Food_Agriculture{
     fill: bisque;
   }
-  .rect_non_profit{
+  .rect_Service{
     fill:#4A777A;
+  }
+  .rect_Unkown{
+    fill: red;
   }
