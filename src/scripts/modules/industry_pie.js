@@ -58,13 +58,13 @@ function load_industry_pie(data) {
     // Build the pie chart: Basically, each part of the pie is a path that we build using the arc function.
     // The arc generator
     for (var i = 0; i < num_of_layers; ++i) {
-        if(!(i==0))
-        // if(!(i%10==0 || i==0))
+        if (!(i == 0))
+            // if(!(i%10==0 || i==0))
             continue
         var arc = d3.arc()
             // .innerRadius(radius * (1.0 - (i + 1) * 1 / num_of_layers))         // This is the size of the donut hole
             .outerRadius(radius * (1.0 - i * 1 / num_of_layers))
-            .innerRadius(i==0? radius * (1.0 - (i + 1) * 1 / num_of_layers) : radius * (1.0 - i * 1 / num_of_layers))
+            .innerRadius(i == 0 ? radius * (1.0 - (i + 1) * 1 / num_of_layers) : radius * (1.0 - i * 1 / num_of_layers))
         svg
             .selectAll('allSlices1111')
             .data(data_ready)
@@ -82,45 +82,6 @@ function load_industry_pie(data) {
             .style("opacity", 0.4);
     }
 
-    // var arc = d3.arc()
-    //         .innerRadius(40)
-    //         .outerRadius(45)
-    //         .startAngle(100)
-    //         .endAngle(2 * 180);
-
-    //     // svg.append("path")
-    //     //     .attr("class", "arc")
-    //     //     .attr("d", arc)
-    //     //     .attr("fill","green");
-
-    //         svg
-    //         .append('path')
-    //         .attr('d', arc)
-    //         .attr('fill', "red")
-    //         .attr('id', "id_arch")
-    //         .attr("stroke", "red")
-    //         .style("stroke-width", "3px")
-    //         .style("opacity", 1).raise()
-
-    // Add the polylines between chart and labels:
-    // svg
-    // 	.selectAll('allPolylines')
-    // 	.data(data_ready)
-    // 	.enter()
-    // 	.append('polyline')
-    // 	.attr("stroke", "black")
-    // 	.style("fill", "none")
-    // 	.attr("stroke-width", 1)
-    // 	.attr('points', function (d) {
-    // 		var posA = arc.centroid(d) // line insertion in the slice
-    // 		var posB = outerArc.centroid(d) // line break: we use the other arc generator that has been built only for that
-    // 		// var posC = outerArc.centroid(d); // Label position = almost the same as posB
-    // 		var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2 // we need the angle to see if the X position will be at the extreme right or extreme left
-    // 		// posC[0] = radius * 0.95 * (midangle < Math.PI ? 1 : -1); // multiply by 1 or -1 to put it on the right or on the left
-    // 		return [posA, posB]//, posC]
-    // 	})
-
-    // Add the polylines between chart and labels:
     svg
         .selectAll('allLabels1')
         .data(data_ready)
@@ -136,6 +97,7 @@ function load_industry_pie(data) {
             return `translate(${arcLabel.centroid(d)})`
         })
         .style('fill', industry_label_color)
+        .style('font', "bold 30px arial,serif")
         .style('text-anchor', function (d) {
             var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2
             return (midangle < Math.PI ? 'start' : 'end')
@@ -156,89 +118,108 @@ function load_industry_pie(data) {
     //     .append("g")
     //     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
     var transform_values = {}
-
-    for (var i = 0; i < label_data.length; i++) {
-        var label = label_data[i]
-        var all_industries = label.Industry.split(',')
-        var industry = name_dict[all_industries[0]];
-        var industry_pie_params = data_ready[industry_index[industry]]
-        // svg.append('svg:image')
-        // .attr({
-        //   'xlink:href': 'http://www.iconpng.com/png/beautiful_flat_color/computer.png',  // can also add svg file here
-        //   x: 0,
-        //   y: 0,
-        //   width: 128,
-        //   height: 128
-        // });
-
-
-        var year = parseInt(label.Year)
-        var myimage = svg
-            .append('svg:image').raise()
-            .attr('xlink:href', '../data/images/labels/' + label.Row + '.png')
-            .attr('width', label_width)
-            .attr('height', label_height)
-            .attr('id', 'id_label_' + label.Row)
-            .attr('class', 'label_class')
-            .attr('transform', function (d) {
-                // var pos = outerArc.centroid(d);
-                // var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2
-                // pos[0] = radius * 0.99 * (midangle < Math.PI ? 1 : -1);
-                // // return 'translate(' + pos + ')';
-                // var usable_angel = industry_pie_params.endAngle- industry_pie_params.startAngle
-                if (!(year in memorize_label_count_per_year[industry])) {
-                    memorize_label_count_per_year[industry][year] = 0
-                }
-                var num_of_existing_labels = memorize_label_count_per_year[industry][year]
-                console.log(num_of_existing_labels * label_angle_gap_to_avoid_overlapping, (num_of_existing_labels + 1) * label_angle_gap_to_avoid_overlapping)
-
-                var label_png_arc = d3.arc()
-                    // .innerRadius(radius / num_of_layers * (year - start_year))         // This is the size of the donut hole
-                    .innerRadius(radius / num_of_layers * (year - start_year))         // This is the size of the donut hole
-                    .outerRadius(radius / num_of_layers * (year - start_year))
-                    .startAngle((industry_pie_params.startAngle + num_of_existing_labels * label_angle_gap_to_avoid_overlapping))
-                    .endAngle((industry_pie_params.startAngle + (num_of_existing_labels + 1) * label_angle_gap_to_avoid_overlapping));
-                // .startAngle(industry_pie_params.startAngle)
-                // .endAngle(industry_pie_params.endAngle)
-                memorize_label_count_per_year[industry][year]++
-
-                var t = `translate(${label_png_arc.centroid()})`
-                transform_values[label.Row] = t
-                // var arc = d3.arc()
-                // .innerRadius(radius / num_of_layers * (year - 2000))
-                // .outerRadius(radius / num_of_layers * (year - start_year))
-                // .startAngle(100)
-                // .endAngle(2 * 180);
-                label_png_arc = d3.arc()
-                // .innerRadius(radius / num_of_layers * (year - start_year))         // This is the size of the donut hole
+    var tooltip = d3.select("body").append("div")
+        .attr("class", "venntooltip")
+        .attr("id", "id_tooltip")
+    d3.select("#id_g_pie")
+    .selectAll("path")
+        .data(label_data)
+        .enter()
+        .append("path")
+        .attr("d", function(d) {
+            var year = parseInt(d.Year)
+            var angles = get_arch_angles_from_pie(data_ready,industry_index, d)
+            var label_png_arc = d3.arc()
                 .innerRadius(radius / num_of_layers * (year - start_year))         // This is the size of the donut hole
                 .outerRadius(radius / num_of_layers * (year - start_year))
-                .startAngle((industry_pie_params.startAngle))
-                .endAngle(industry_pie_params.endAngle );
-                svg
-            // .select('#pie_id')
-            .append('path')
-            .attr('d', label_png_arc)
-            // .attr('fill', "gray")
-            .attr('id', "id_arch_"+label.Row)
-            .attr("stroke", color(label.Row))//"orange")
-            .style("stroke-width", "8px")
-            .style("opacity", 0.4)
+                .startAngle(angles[0])
+                .endAngle(angles[1]);
+            return label_png_arc()
+        })
+        .attr("id", function (d) {
+            return "id_arch_" + d.Row;
+        }).attr("stroke",function (d) {
+            return color(d.Row);
+        }  )//"orange")
+        .style("stroke-width", "6px")
+        // .style("opacity", function (d) {
+        //     return d.Row==34 || d.Row==40 ?1:0;
+        // })
+        .style("opacity", 0.6)
+        .on("mouseover", function (d) {
+            // sort all the areas relative to the current item
+            // Display a tooltip with the current size
+            tooltip.transition().duration(400).style("opacity", .9);
+            tooltip.text(d.Name);
 
-            return t
+            // highlight the current path
+            console.log('what is this', this)
+            debugger
+            var selection = d3.select(this).transition("tooltip").duration(400);
+            d3.select(this)
+                .style("fill-opacity", .4 )
+                .style("stroke-opacity", 0.6);
+        })
 
-            }).raise()
-    }
+        .on("mousemove", function () {
+            tooltip.style("left", (d3.event.pageX) + "px")
+                .style("top", (d3.event.pageY - 28) + "px");
+        })
+
+        .on("mouseout", function (d) {
+            tooltip.transition().duration(400).style("opacity", 0);
+            var selection = d3.select(this).transition("tooltip").duration(400);
+            d3.select(this)
+                .style("fill-opacity",  1)
+                .style("stroke-opacity", 1);
+        });
+
+        // var myimage = svg
+        // .append('svg:image').raise()
+        // .attr('xlink:href', '../data/images/labels/' + label.Row + '.png')
+        // .attr('width', label_width)
+        // .attr('height', label_height)
+        // .attr('id', 'id_label_' + label.Row)
+        // .attr('class', 'label_class')
+        // .attr('transform',
 
     return transform_values
 }
+
+function get_arch_angles_from_pie(data_ready,industry_index,d) {
+    var all_industries = d.Industry.split(',')
+    if(all_industries.length ==1) {
+        var industry = name_dict[all_industries[0]];
+        var industry_pie_params = data_ready[industry_index[industry]]
+        return [industry_pie_params.startAngle, industry_pie_params.endAngle]
+    }
+    if(all_industries.length ==3) {
+        return [0, 2* Math.PI]
+    } else {
+        if(industry_index[name_dict[all_industries[0]]] + industry_index[name_dict[all_industries[1]]] == 2) {
+            return [data_ready[2].startAngle - 2* Math.PI,data_ready[0].endAngle]
+        } else if(industry_index[name_dict[all_industries[0]]] + industry_index[name_dict[all_industries[1]]] == 1) {
+            return [data_ready[0].startAngle,data_ready[1].endAngle]
+        }
+        else {
+            return [data_ready[1].startAngle,data_ready[2].endAngle]
+        }
+    }
+
+}
 function show_pie(opacity, label_opacity, transition_time, industry_pie_transform_values) {
-    d3.selectAll('#pie_id').transition().duration(transition_time).style("opacity", opacity);
-    d3.selectAll('#id_pie_text').transition().duration(transition_time).style("opacity", label_opacity);
+    d3.selectAll('#id_g_pie').raise().transition().duration(transition_time).style("opacity", opacity);
+    d3.selectAll('#id_pie_text').raise().transition().duration(transition_time).style("opacity", label_opacity);
     if (opacity > 0) {
         for (const [row, transform_value] of Object.entries(industry_pie_transform_values)) {
             pie_label_transform(transition_time, row, transform_value)
         }
+    }
+    else {
+        // d3.select("#id_g_pie")
+        // .transition().duration(transition_time).style("opacity", opacity).remove();
+        // d3.select("#id_pie_text")
+        // .transition().duration(transition_time).style("opacity", opacity).remove();
     }
 }
 function pie_label_transform(transition_time, label_row_number, transform_value) {

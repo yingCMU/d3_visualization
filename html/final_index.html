@@ -14,6 +14,7 @@
 </head>
 
 <body class="background">
+	<!-- <svg id="svg"></svg> -->
 	<div class="canvas">
 		<!-- <div id="id_labels" class="label_svg"> -->
 	</div>
@@ -91,7 +92,7 @@
 				return
 			}
 
-			show_pie(new_value == 1 ? 0.4 : 0, new_value == 1 ? 1 : 0, transition_time * 2, industry_pie_transform_values)
+			show_pie(new_value == 1 ? 1 : 0, new_value == 1 ? 1 : 0, transition_time * 2, industry_pie_transform_values)
 			show_grid(new_value == 50 ? 1 : 0, transition_time * 2, grid_index)
 			// show_venn(new_value == 100 ? 0.45 : 0, transition_time * 2)
 			// d3

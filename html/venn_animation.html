@@ -51,7 +51,7 @@
                 .style("stroke-width", 3)
 
             div.selectAll("g")
-                .on("mouseover", function (d, i) {
+                .on("click", function (d, i) {
                     // sort all the areas relative to the current item
                     venn.sortAreas(div, d);
 

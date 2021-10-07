@@ -96,14 +96,21 @@ function create_grid(label_data, name_dict) {
 
 }
 function show_grid(opacity, transition_time, lable_row_to_grid_index) {
-    var svg = d3.select("#id_industry_pie")
-        .select("svg")
-        .select("#id_g_grid").lower()
-        .transition().duration(transition_time).style("opacity", opacity);
-    if (opacity > 0)
+    if (opacity > 0) {
         for (const [row, grid_idx] of Object.entries(lable_row_to_grid_index)) {
             label_transform(transition_time, row, grid_idx)
         }
+        d3.select("#id_industry_pie")
+        .select("svg")
+        .select("#id_g_grid").raise()
+        .transition().duration(transition_time).style("opacity", opacity);
+    } else {
+        d3.select("#id_industry_pie")
+        .select("svg")
+        .select("#id_g_grid").lower()
+        .transition().duration(transition_time).style("opacity", opacity)//.remove();
+    }
+
 
 
 }
@@ -119,7 +126,5 @@ function label_transform(transition_time, label_row, grid_idx) {
         .transition()
         .duration(transition_time * 3)
         .attr("transform", "translate(" + svg_top_cell.attr('x') + "," + (-total_grid_height / 2 - block_height * 0.7) + ")")
-    //  .style("left",block_width).style("top",0)
-    console.log('attrx', svg_top_cell.attr('x'))
 }
 export { create_grid, show_grid, label_transform };
