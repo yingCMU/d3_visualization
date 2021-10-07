@@ -30,9 +30,7 @@ function sort_label_by_body(label_data, name_dict) {
 }
 
 function get_color_class(label, l, name_dict) {
-    if(l==0){
-        return 'rect_gap'
-    }
+
     if (label['Transparency_' + l] == 0) {
         return "rect_empty"
     } else {

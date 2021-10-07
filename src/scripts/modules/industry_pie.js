@@ -26,16 +26,14 @@ function load_industry_pie(data) {
         .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
 
     var industry_index = {
-        "Unkown": 0,
-        "Service": 1,
-        "Food_Agriculture": 2,
-        "Manufacturing": 3
+        "Service": 0,
+        "Farming_Agriculture": 1,
+        "Manufacturing": 2
     }
     // Create dummy data
     var data = {
-        "Unkown": 25,
         "Service": 25,
-        "Food_Agriculture": 25,
+        "Farming_Agriculture": 25,
         "Manufacturing": 25
     };
 
@@ -60,9 +58,13 @@ function load_industry_pie(data) {
     // Build the pie chart: Basically, each part of the pie is a path that we build using the arc function.
     // The arc generator
     for (var i = 0; i < num_of_layers; ++i) {
+        if(!(i==0))
+        // if(!(i%10==0 || i==0))
+            continue
         var arc = d3.arc()
-            .innerRadius(radius * (1.0 - (i + 1) * 1 / num_of_layers))         // This is the size of the donut hole
+            // .innerRadius(radius * (1.0 - (i + 1) * 1 / num_of_layers))         // This is the size of the donut hole
             .outerRadius(radius * (1.0 - i * 1 / num_of_layers))
+            .innerRadius(i==0? radius * (1.0 - (i + 1) * 1 / num_of_layers) : radius * (1.0 - i * 1 / num_of_layers))
         svg
             .selectAll('allSlices1111')
             .data(data_ready)
@@ -71,15 +73,34 @@ function load_industry_pie(data) {
             .attr('d', arc)
             .attr('id', 'pie_id')
             .attr('fill', function (d) {
-                return i == 0 ? color(d.data.key) : "white";
-                // console.log(d.data);
-                // console.log(color(d.data));
-                return (color(d.data.key));
+                return "white"
+                // return i == 0 ? color(d.data.key) : "white";
             })
             .attr("stroke", "white")
             .style("stroke-width", "1px")
+            .style("width", "1px")
             .style("opacity", 0.4);
     }
+
+    // var arc = d3.arc()
+    //         .innerRadius(40)
+    //         .outerRadius(45)
+    //         .startAngle(100)
+    //         .endAngle(2 * 180);
+
+    //     // svg.append("path")
+    //     //     .attr("class", "arc")
+    //     //     .attr("d", arc)
+    //     //     .attr("fill","green");
+
+    //         svg
+    //         .append('path')
+    //         .attr('d', arc)
+    //         .attr('fill', "red")
+    //         .attr('id', "id_arch")
+    //         .attr("stroke", "red")
+    //         .style("stroke-width", "3px")
+    //         .style("opacity", 1).raise()
 
     // Add the polylines between chart and labels:
     // svg
@@ -122,9 +143,8 @@ function load_industry_pie(data) {
 
 
     var memorize_label_count_per_year = {
-        "Unkown": {},
         "Service": {},
-        "Food_Agriculture": {},
+        "Farming_Agriculture": {},
         "Manufacturing": {}
     }
     var estimating_labels_per_industry_per_year = 9;
@@ -173,25 +193,41 @@ function load_industry_pie(data) {
                 console.log(num_of_existing_labels * label_angle_gap_to_avoid_overlapping, (num_of_existing_labels + 1) * label_angle_gap_to_avoid_overlapping)
 
                 var label_png_arc = d3.arc()
+                    // .innerRadius(radius / num_of_layers * (year - start_year))         // This is the size of the donut hole
                     .innerRadius(radius / num_of_layers * (year - start_year))         // This is the size of the donut hole
                     .outerRadius(radius / num_of_layers * (year - start_year))
-                    .startAngle(industry_pie_params.startAngle + num_of_existing_labels * label_angle_gap_to_avoid_overlapping)
-                    .endAngle(industry_pie_params.startAngle + (num_of_existing_labels + 1) * label_angle_gap_to_avoid_overlapping);
+                    .startAngle((industry_pie_params.startAngle + num_of_existing_labels * label_angle_gap_to_avoid_overlapping))
+                    .endAngle((industry_pie_params.startAngle + (num_of_existing_labels + 1) * label_angle_gap_to_avoid_overlapping));
                 // .startAngle(industry_pie_params.startAngle)
                 // .endAngle(industry_pie_params.endAngle)
                 memorize_label_count_per_year[industry][year]++
+
                 var t = `translate(${label_png_arc.centroid()})`
                 transform_values[label.Row] = t
-                if (label.Row == '7' || label.Row == '27'){
-                    console.log(label.Row, label.Industry, 'start_angle:', industry_pie_params.startAngle + num_of_existing_labels * label_angle_gap_to_avoid_overlapping,
-                    'end_angle:', industry_pie_params.startAngle + (num_of_existing_labels + 1) * label_angle_gap_to_avoid_overlapping,
-                    'end_angle:', industry_pie_params.startAngle + (num_of_existing_labels + 1) * label_angle_gap_to_avoid_overlapping,
-                    t
-                )
-                }
+                // var arc = d3.arc()
+                // .innerRadius(radius / num_of_layers * (year - 2000))
+                // .outerRadius(radius / num_of_layers * (year - start_year))
+                // .startAngle(100)
+                // .endAngle(2 * 180);
+                label_png_arc = d3.arc()
+                // .innerRadius(radius / num_of_layers * (year - start_year))         // This is the size of the donut hole
+                .innerRadius(radius / num_of_layers * (year - start_year))         // This is the size of the donut hole
+                .outerRadius(radius / num_of_layers * (year - start_year))
+                .startAngle((industry_pie_params.startAngle))
+                .endAngle(industry_pie_params.endAngle );
+                svg
+            // .select('#pie_id')
+            .append('path')
+            .attr('d', label_png_arc)
+            // .attr('fill', "gray")
+            .attr('id', "id_arch_"+label.Row)
+            .attr("stroke", color(label.Row))//"orange")
+            .style("stroke-width", "8px")
+            .style("opacity", 0.4)
 
-                return t
-            })
+            return t
+
+            }).raise()
     }
 
     return transform_values
