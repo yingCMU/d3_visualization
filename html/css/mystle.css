@@ -127,3 +127,9 @@ circle {
     border-radius: 8px;
     opacity: 0;
 }
+
+.words {
+  width: "5px";
+  white-space: nowrap; /* Thanks to Herb Caudill comment */
+  overflow: hidden;  /* prevents extra lines from being visible */
+}

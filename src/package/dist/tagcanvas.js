@@ -1667,7 +1667,7 @@
         el[i].style.display = 'none';
     };
     TCproto.GetTags = function() {
-      var el = this.SourceElements(), etl, tl = [], i, j, k;
+      var el = this.SourceElements(), etl, tl = [], i, j, k;//
       for(k = 0; k <= this.repeatTags; ++k) {
         for(i = 0; i < el.length; ++i) {
           etl = el[i].getElementsByTagName('a');

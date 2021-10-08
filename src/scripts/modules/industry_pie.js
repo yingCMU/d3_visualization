@@ -59,10 +59,8 @@ function load_industry_pie(data) {
     // The arc generator
     for (var i = 0; i < num_of_layers; ++i) {
         if (!(i == 0))
-            // if(!(i%10==0 || i==0))
             continue
         var arc = d3.arc()
-            // .innerRadius(radius * (1.0 - (i + 1) * 1 / num_of_layers))         // This is the size of the donut hole
             .outerRadius(radius * (1.0 - i * 1 / num_of_layers))
             .innerRadius(i == 0 ? radius * (1.0 - (i + 1) * 1 / num_of_layers) : radius * (1.0 - i * 1 / num_of_layers))
         svg

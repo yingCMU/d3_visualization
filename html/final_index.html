@@ -32,6 +32,7 @@
 		var new_value = 1
 		var num_of_labels
 		const block_width = 30;
+		const grid_block_filled_width = 10;
 		const block_height = 60;
 		var total_grid_height = num_of_grid_layers * block_height
 		var total_grid_width
@@ -53,7 +54,7 @@
 	<script type="module">
 
 		import { load_industry_pie, show_pie } from "../src/scripts/modules/industry_pie.js";
-		import { create_grid, show_grid, label_transform } from "../src/scripts/modules/transparency_grid_module.js";
+		import { create_grid, show_grid, label_transform, transparency_grid_index_text } from "../src/scripts/modules/transparency_grid_module.js";
 
 		// function create_venn() {
 		// 	const circle_opacity = .15;
@@ -110,7 +111,7 @@
 
 			lable_industry_pie_transform_values = load_industry_pie()
 			lable_row_to_grid_index = create_grid(label_data, name_dict)
-			console.log('label_data', label_data)
+			transparency_grid_index_text()
 			var rangeInput = document.getElementById("id_slider");
 			rangeInput.addEventListener('mouseup', function () {
 				if (this.value < 25) {
