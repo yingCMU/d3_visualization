@@ -48,7 +48,7 @@
 			"Serv": "Service",
 			"Soc": "Social",
 			"SC": "Social",
-			"EN+E": "Environemnt_Energy",
+			"EN+E": "Environment_Energy",
 			"FQ": "Food_Quality",
 		}
 
@@ -116,7 +116,7 @@
 			lable_industry_pie_transform_values, row_colors = load_industry_pie(label_data)
 			lable_row_to_grid_index = create_grid(label_data, name_dict, row_colors)
 			transparency_grid_index_text()
-		// create_impact_pie()
+		create_impact_pie(row_colors)
 
 			var rangeInput = document.getElementById("id_slider");
 			rangeInput.addEventListener('mouseup', function () {

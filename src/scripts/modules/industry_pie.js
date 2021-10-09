@@ -487,17 +487,17 @@ function get_arch_angles_from_pie(data_ready, industry_index, d) {
 function show_pie(opacity, label_opacity, transition_time, industry_pie_transform_values) {
     d3.selectAll('#id_g_pie').raise().transition().duration(transition_time).style("opacity", opacity);
     d3.selectAll('#id_pie_text').raise().transition().duration(transition_time).style("opacity", label_opacity);
-    if (opacity > 0) {
-        for (const [row, transform_value] of Object.entries(industry_pie_transform_values)) {
-            pie_label_transform(transition_time, row, transform_value)
-        }
-    }
-    else {
-        // d3.select("#id_g_pie")
-        // .transition().duration(transition_time).style("opacity", opacity).remove();
-        // d3.select("#id_pie_text")
-        // .transition().duration(transition_time).style("opacity", opacity).remove();
-    }
+    // if (opacity > 0) {
+    //     for (const [row, transform_value] of Object.entries(industry_pie_transform_values)) {
+    //         pie_label_transform(transition_time, row, transform_value)
+    //     }
+    // }
+    // else {
+    //     // d3.select("#id_g_pie")
+    //     // .transition().duration(transition_time).style("opacity", opacity)//.remove();
+    //     // d3.select("#id_pie_text")
+    //     // .transition().duration(transition_time).style("opacity", opacity)//.remove();
+    // }
 }
 function pie_label_transform(transition_time, label_row_number, transform_value) {
     var svg_label = d3.select("#id_label_" + label_row_number).raise()

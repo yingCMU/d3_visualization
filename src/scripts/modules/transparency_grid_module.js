@@ -85,7 +85,6 @@ function create_grid(label_data, name_dict, row_colors) {
 
 
     expand_one_grid(lable_row_to_grid_index)
-    console.log('where is clickable grid',lable_row_to_grid_index[12])
     return lable_row_to_grid_index
 
 }
@@ -93,11 +92,11 @@ function expand_one_grid(lable_row_to_grid_index) {
     var row_number = 12 // energy star
     var grid_idx = lable_row_to_grid_index[row_number]
     // var all_grids = [
-        d3.select("#id_rect_0-" + grid_idx).on("click",expand_on_click).on("mouseout",revert )
-        d3.select("#id_rect_1-" + grid_idx).on("click",expand_on_click).on("mouseout",revert )
-        d3.select("#id_rect_2-" + grid_idx).on("click",expand_on_click).on("mouseout",revert )
-        d3.select("#id_rect_3-" + grid_idx).on("click",expand_on_click).on("mouseout",revert )
-        d3.select("#id_rect_4-" + grid_idx).on("click",expand_on_click).on("mouseout",revert )
+        d3.select("#id_rect_0-" + grid_idx).on("mouseover",expand_on_click).on("mouseout",revert )
+        d3.select("#id_rect_1-" + grid_idx).on("mouseover",expand_on_click).on("mouseout",revert )
+        d3.select("#id_rect_2-" + grid_idx).on("mouseover",expand_on_click).on("mouseout",revert )
+        d3.select("#id_rect_3-" + grid_idx).on("mouseover",expand_on_click).on("mouseout",revert )
+        d3.select("#id_rect_4-" + grid_idx).on("mouseover",expand_on_click).on("mouseout",revert )
     // ]
     // d3.select("#id_rect_0-" + i).on("click", function (d) {
     //     var selected = d3.select(this).raise()
@@ -154,6 +153,7 @@ function show_grid(opacity, transition_time, lable_row_to_grid_index) {
             .select("#id_g_grid").raise()
             .transition().duration(transition_time).style("opacity", opacity);
     } else {
+        debugger
         d3.select("#id_industry_pie")
             .select("svg")
             .select("#id_g_grid").lower()
@@ -177,7 +177,6 @@ function creat_label_images(transition_time, lable_row_to_grid_index, label_row,
     console.log('creat_label_images',label_row,filter)
     var grid_idx = lable_row_to_grid_index[label_row]
     var svg_top_cell = d3.select("#id_rect_0-" + grid_idx)
-    debugger
     svg
         .append('svg:image').raise()
         .attr('xlink:href', '../data/images/labels/' + label_row + '.png')
