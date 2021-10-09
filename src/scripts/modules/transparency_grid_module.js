@@ -33,7 +33,6 @@ function create_grid(label_data, name_dict, row_colors) {
         .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
     var idx = 0
     var lable_row_to_grid_index = {}
-    debugger
     for (const [body, label_array] of Object.entries(sorted_label_data)) {
         for (var i = 0; i < label_array.length; ++i) {
             var label = label_array[i]

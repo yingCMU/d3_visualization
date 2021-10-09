@@ -38,7 +38,7 @@ function create_impact_pie(row_colors) {
             .value(function (d) { return d.value; })
         var data_ready = pie(d3.entries(data))
 
-        var arcLabel = d3.arc().innerRadius(radius).outerRadius(radius);
+        var arcLabel = d3.arc().innerRadius(radius * 1.1).outerRadius(radius * 1.1);
 
         // Another arc that won't be drawn. Just for labels positioning
         var outerArc = d3.arc()
@@ -80,16 +80,25 @@ function create_impact_pie(row_colors) {
             .attr('transform', function (d) {
                 var pos = outerArc.centroid(d);
                 var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2
+                debugger
                 pos[0] = radius * 0.99 * (midangle < Math.PI ? 1 : -1);
                 // return 'translate(' + pos + ')';
+                // return 'translate(' + pos[0] + ',' +pos[1]+')';
                 return `translate(${arcLabel.centroid(d)})`
             })
             .style('fill', impact_label_color)
 
             .style('font', "20px Helvetica Neue")
             .style('text-anchor', function (d) {
-                var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2
-                return (midangle < Math.PI ? 'start' : 'end')
+                // var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2
+                // return (midangle < Math.PI ? 'start' : 'end')
+
+                if(d.startAngle == 0){
+                    return 'start'
+                } else if (d.endAngle == 2*Math.PI) {
+                    return 'end'
+                }
+                return "middle"
             })
 
 

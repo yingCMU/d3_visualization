@@ -387,8 +387,15 @@ function load_industry_pie(label_data) {
         .style('fill', industry_label_color)
         .style('font', "20px Helvetica Neue")
         .style('text-anchor', function (d) {
-            var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2
-            return (midangle < Math.PI ? 'start' : 'end')
+            // var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2
+            // return (midangle < Math.PI ? 'start' : 'end')
+            if(d.startAngle == 0){
+              return 'start'
+          } else if (d.endAngle == 2*Math.PI) {
+              return 'end'
+          }
+          return "middle"
+
         })
 
 
