@@ -6,17 +6,20 @@ function sort_label_by_body(label_data, name_dict) {
     return sorted_data;
 }
 
-function get_color_class(label, l, name_dict) {
-
-    if (label['Transparency_' + l] == 0) {
-        return "rect_empty"
+function get_color_class_color(label, l, row_colors) {
+    if (label['Transparency_' + (l+1)] == 0) {
+        return ["rect_empty", null, null]
     } else {
-        var all_industries = label.Industry.split(',')
-        return "rect_" + name_dict[all_industries[0]];
+        var hex_color=row_colors[label.Row][0]
+        var filter_color = row_colors[label.Row][1]
+        return ["rect_Unkown", hex_color, "invert(11%) sepia(100%) saturate(6258%) hue-rotate(242deg) brightness(83%) contrast(135%)"]
+        // filter_color.replace("filter:", "");
     }
 }
 
-function create_grid(label_data, name_dict) {
+
+
+function create_grid(label_data, name_dict, row_colors) {
     var sorted_label_data = sort_label_by_body(label_data, name_dict)
     const width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
     const height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
@@ -34,24 +37,27 @@ function create_grid(label_data, name_dict) {
             var label = label_array[i]
             lable_row_to_grid_index[label.Row] = idx
             for (var l = 0; l < num_of_grid_layers; l++) {
+                var [ label_class, label_color, filter_color] = get_color_class_color(label, l ,row_colors)
+                debugger
                 svg
-                    .append('rect').attr('id', 'id_rect_' + l + '-' + idx).attr("class", get_color_class(label, l, name_dict))//.enter()
+                    .append('rect').attr('id', 'id_rect_' + l + '-' + idx)
+                    // .attr("class", label_class)
+                    .attr("fill", label_color)
                     .attr('x', block_width * idx - total_grid_width / 2 + (block_width - grid_block_filled_width) / 2)
                     .attr('y', l * block_height - total_grid_height / 2)
                     .attr("width", grid_block_filled_width)
                     .attr("height", block_height)
                     .attr("stroke-width", "1pt")
-                    // .attr("stroke", "white")
                     .style("opacity", 1)
-                    // .on("click", function (d) {
-                    //     var selected = d3.select(this).raise()
-                    //     debugger
+                // .on("click", function (d) {
+                //     var selected = d3.select(this).raise()
+                //     debugger
 
-                    //     var original_width = selected.attr('width')
-                    //     selected.transition().duration(400)
-                    //         .attr("width", 6* original_width )
-                    //         // .style("stroke-opacity", 0.6);
-                    // })
+                //     var original_width = selected.attr('width')
+                //     selected.transition().duration(400)
+                //         .attr("width", 6* original_width )
+                //         // .style("stroke-opacity", 0.6);
+                // })
 
                 // .attrs({ x: 10, y: 10, width: 80, height: 80, fill: 'red' })
                 // .transition()
@@ -75,16 +81,16 @@ function create_grid(label_data, name_dict) {
             }
             idx++ // label processed
         }
-        idx++ // gaps
+        // idx++ // gaps
     }
     var horizontal_lines = []
     for (var l = 0; l < num_of_grid_layers; l++) {
         horizontal_lines.push([
-            [-total_grid_width / 2 - block_width, l * block_height - total_grid_height / 2+block_height],
-            [total_grid_width / 2+ block_width, l * block_height - total_grid_height / 2+block_height]
+            [-total_grid_width / 2 - block_width, l * block_height - total_grid_height / 2 + block_height],
+            [total_grid_width / 2 + block_width, l * block_height - total_grid_height / 2 + block_height]
         ])
     }
-// draw horizontal dotted lines
+    // draw horizontal dotted lines
     svg
         .selectAll("path")
         .data(horizontal_lines)
@@ -100,18 +106,67 @@ function create_grid(label_data, name_dict) {
         .style("stroke-width", "2px")
         .style("opacity", 0.3)
 
-    for(var r = 3; r < num_of_labels+3; r++){
-        creat_label_images(400,lable_row_to_grid_index,r, svg)
+    for (var r = 3; r < num_of_labels + 3; r++) {
+        creat_label_images(400, lable_row_to_grid_index, r, svg, filter_color)
     }
 
-
+    expand_one_grid(lable_row_to_grid_index)
+    console.log('where is clickable grid',lable_row_to_grid_index[12])
     return lable_row_to_grid_index
 
 }
-function expand_one_grid(lable_row_to_grid_index){
-    var row_number = 21 // energy star
+function expand_one_grid(lable_row_to_grid_index) {
+    var row_number = 12 // energy star
     var grid_idx = lable_row_to_grid_index[row_number]
-    var svg_top_cell = d3.select("#id_rect_0-" + grid_idx)
+    // var all_grids = [
+        d3.select("#id_rect_0-" + grid_idx).on("click",expand_on_click).on("mouseout",revert )
+        d3.select("#id_rect_1-" + grid_idx).on("click",expand_on_click).on("mouseout",revert )
+        d3.select("#id_rect_2-" + grid_idx).on("click",expand_on_click).on("mouseout",revert )
+        d3.select("#id_rect_3-" + grid_idx).on("click",expand_on_click).on("mouseout",revert )
+        d3.select("#id_rect_4-" + grid_idx).on("click",expand_on_click).on("mouseout",revert )
+    // ]
+    // d3.select("#id_rect_0-" + i).on("click", function (d) {
+    //     var selected = d3.select(this).raise()
+    //     debugger
+
+    //     var original_width = selected.attr('width')
+    //     selected.transition().duration(400)
+    //         .attr("width", 6 * original_width)
+    //     // .style("stroke-opacity", 0.6);
+    // })
+    function expand_on_click() {
+        for (var l = 0; l < num_of_grid_layers; l++) {
+            var selected =  d3.select("#id_rect_"+l+"-" + grid_idx).raise()
+            selected.transition().duration(400)
+                    .attr("width", 6 * block_width)
+                // .style("stroke-opacity", 0.6);
+        }
+        d3.selectAll("#id_line").raise()
+        // for (var i = grid_idx + 1; i < num_of_labels; i++) {
+        //     var selected_img =  d3.select("#id_label_img_"+ l)
+        //     var original_x = selected_img.attr("x")
+        //     selected_img.transition().duration(400)
+        //     .attr("x", original_x+ block_width * 3 )
+        //     for (var l =0; l < num_of_grid_layers; l++) {
+        //         var selected =  d3.select("#id_rect_"+l+"-" + i).raise()
+        //         var x = selected.attr('x')
+        //         var y = selected.attr('y')
+        //         selected.transition().duration(400)
+        //         .attr('x', block_width * 5+ x)
+        //         // .attr("transform", "translate(" +  x+ block_width * 3+ "," +y+")");
+        //     }
+        // }
+    }
+
+    function revert() {
+        for (var l = 0; l < num_of_grid_layers; l++) {
+            var selected =  d3.select("#id_rect_"+l+"-" + grid_idx).raise()
+            selected.transition().duration(400)
+                    .attr("width", grid_block_filled_width)
+                // .style("stroke-opacity", 0.6);
+        }
+    }
+
 
 }
 
@@ -144,7 +199,7 @@ function label_transform(transition_time, label_row, grid_idx) {
         .duration(transition_time * 3)
         .attr("transform", "translate(" + svg_top_cell.attr('x') + "," + (-total_grid_height / 2 - block_height * 0.7) + ")")
 }
-function creat_label_images(transition_time, lable_row_to_grid_index, label_row, svg) {
+function creat_label_images(transition_time, lable_row_to_grid_index, label_row, svg, filter) {
     var grid_idx = lable_row_to_grid_index[label_row]
     var svg_top_cell = d3.select("#id_rect_0-" + grid_idx)
     svg
@@ -154,8 +209,9 @@ function creat_label_images(transition_time, lable_row_to_grid_index, label_row,
         .attr("y", 0)
         .attr('width', label_width)
         .attr('height', label_height)
-        .attr('id', 'id_label_img_' + label_row)
-        .attr('class', 'label_class')
+        .attr('id', 'id_label_img_' + grid_idx)
+        .attr('filter', filter)
+        // .attr('class', 'label_class')
         .style("opacity", 0.6)
         // .attr("fill", 'red')
         .transition()

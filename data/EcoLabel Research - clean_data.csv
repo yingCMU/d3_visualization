@@ -2,7 +2,6 @@ Industry,Row,Year,Name,Body,Mode of Governance,Measurement Details,Impact,Transp
 ,,,,,,,,,,,,,
 Fa+A,3,2010,American Grassfed,In,"Thrdp,Slf",food products from animals that have eaten nothing but their mother’s milk and fresh grass or grass-type hay from birth to harvest – all their lives,"EN+N,FQ",1,0,1,1,1,4
 Fa+A,4,2002,USDA Organic,Gov,Gov,"Organic meat, poultry, eggs, and dairy products come from animals that are given no antibiotics or growth hormones.
-
 Organic food is produced without using most conventional pesticides; fertilizers made with synthetic ingredients or sewage sludge; bioengineering; or ionizing radiation.",FQ,1,0,0,1,1,3
 Manf,5,2004,80 PLUS,In,Thrdp,promotes and incents a broad array of highly energy-efficient commercial and retail technologies.,EN+E,1,1,1,0,1,4
 Serv,6,2009,UPS Carbon Neutral,In,Thrdp ,"indicates that UPS customers have offset the climate impact of the GHG emissions produced by the transportation of that shipment. UPS calculates the emissions and purchases carbon offset credits equivalent to the GHG emissions created in shipping the package to make it ""carbon neutral"".",EN+E,0,0,0,0,0,0

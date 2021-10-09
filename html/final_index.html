@@ -27,7 +27,7 @@
 	<script>
 		const num_of_grid_layers = 5;
 		var lable_row_to_grid_index
-		var lable_industry_pie_transform_values
+		var lable_industry_pie_transform_values, row_colors
 		var old_value = 1
 		var new_value = 1
 		var num_of_labels
@@ -113,8 +113,8 @@
 			label_data = data
 			total_grid_width = (num_of_labels+2) * block_width
 
-			lable_industry_pie_transform_values = load_industry_pie()
-			lable_row_to_grid_index = create_grid(label_data, name_dict)
+			lable_industry_pie_transform_values, row_colors = load_industry_pie(label_data)
+			lable_row_to_grid_index = create_grid(label_data, name_dict, row_colors)
 			transparency_grid_index_text()
 		// create_impact_pie()
 
@@ -131,6 +131,7 @@
 				switch_view(old_value, new_value, lable_row_to_grid_index, lable_industry_pie_transform_values)
 				old_value = new_value
 			});
+			console.log('row_colors',row_colors);
 
 		})
 
