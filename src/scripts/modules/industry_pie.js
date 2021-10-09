@@ -8,7 +8,7 @@ function load_industry_pie(data) {
     const width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
     const height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
     const num_of_layers = latest_year - start_year;
-    const margin = 40
+    const margin = 80
 
 
 
@@ -48,7 +48,7 @@ function load_industry_pie(data) {
         .value(function (d) { return d.value; })
     var data_ready = pie(d3.entries(data))
 
-    var arcLabel = d3.arc().innerRadius(radius).outerRadius(radius);
+    var arcLabel = d3.arc().innerRadius(radius * 1.05).outerRadius(radius * 1.05);
 
     // Another arc that won't be drawn. Just for labels positioning
     var outerArc = d3.arc()
@@ -147,12 +147,11 @@ function load_industry_pie(data) {
         .on("mouseover", function (d) {
             // sort all the areas relative to the current item
             // Display a tooltip with the current size
-            tooltip.transition().duration(400).style("opacity", .9);
-            tooltip.text(d.Name);
+            // tooltip.transition().duration(400).style("opacity", .9);
+            // tooltip.text(d.Name);
 
             // highlight the current path
             console.log('what is this', this)
-            debugger
             var selection = d3.select(this).transition("tooltip").duration(400);
             d3.select(this)
                 .style("fill-opacity", .4 )
@@ -160,12 +159,12 @@ function load_industry_pie(data) {
         })
 
         .on("mousemove", function () {
-            tooltip.style("left", (d3.event.pageX) + "px")
-                .style("top", (d3.event.pageY - 28) + "px");
+            // tooltip.style("left", (d3.event.pageX) + "px")
+            //     .style("top", (d3.event.pageY - 28) + "px");
         })
 
         .on("mouseout", function (d) {
-            tooltip.transition().duration(400).style("opacity", 0);
+            // tooltip.transition().duration(400).style("opacity", 0);
             var selection = d3.select(this).transition("tooltip").duration(400);
             d3.select(this)
                 .style("fill-opacity",  1)

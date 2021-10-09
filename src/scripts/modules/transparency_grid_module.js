@@ -43,6 +43,15 @@ function create_grid(label_data, name_dict) {
                     .attr("stroke-width", "1pt")
                     // .attr("stroke", "white")
                     .style("opacity", 1)
+                    // .on("click", function (d) {
+                    //     var selected = d3.select(this).raise()
+                    //     debugger
+
+                    //     var original_width = selected.attr('width')
+                    //     selected.transition().duration(400)
+                    //         .attr("width", 6* original_width )
+                    //         // .style("stroke-opacity", 0.6);
+                    // })
 
                 // .attrs({ x: 10, y: 10, width: 80, height: 80, fill: 'red' })
                 // .transition()
@@ -94,7 +103,15 @@ function create_grid(label_data, name_dict) {
     for(var r = 3; r < num_of_labels+3; r++){
         creat_label_images(400,lable_row_to_grid_index,r, svg)
     }
+
+
     return lable_row_to_grid_index
+
+}
+function expand_one_grid(lable_row_to_grid_index){
+    var row_number = 21 // energy star
+    var grid_idx = lable_row_to_grid_index[row_number]
+    var svg_top_cell = d3.select("#id_rect_0-" + grid_idx)
 
 }
 
