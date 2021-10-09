@@ -172,7 +172,7 @@ function load_industry_pie(data) {
                 .style("stroke-opacity", 1);
         });
 
-        // var myimage = svg
+       // var myimage = svg
         // .append('svg:image').raise()
         // .attr('xlink:href', '../data/images/labels/' + label.Row + '.png')
         // .attr('width', label_width)

@@ -1658,6 +1658,7 @@
     TCproto = TagCanvas.prototype;
     TCproto.SourceElements = function() {
       if(doc.querySelectorAll)
+        debugger
         return doc.querySelectorAll('#' + this.source);
       return [doc.getElementById(this.source)];
     };
@@ -1670,7 +1671,9 @@
       var el = this.SourceElements(), etl, tl = [], i, j, k;//
       for(k = 0; k <= this.repeatTags; ++k) {
         for(i = 0; i < el.length; ++i) {
-          etl = el[i].getElementsByTagName('a');
+          // etl = el[i].getElementsByTagName('a');
+          etl = el[i].getElementsByClassName('a-'+this.source)
+          debugger
           for(j = 0; j < etl.length; ++j) {
             tl.push(etl[j]);
           }

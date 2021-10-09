@@ -14,6 +14,12 @@ svg {
 }
 
 .label_class {
+  /* fill: red; */
+  filter:invert(11%) sepia(100%) saturate(6258%) hue-rotate(242deg) brightness(83%) contrast(135%);
+
+
+  /* filter: grayscale(100%) invert(30%) sepia(99%) saturate(5011%) hue-rotate(292deg) brightness(106%) contrast(120%); */
+
 }
 
 circle {
@@ -127,9 +133,4 @@ circle {
     border-radius: 8px;
     opacity: 0;
 }
-
-.words {
-  width: "5px";
-  white-space: nowrap; /* Thanks to Herb Caudill comment */
-  overflow: hidden;  /* prevents extra lines from being visible */
-}
+/* .svgimg { fill: red; } */

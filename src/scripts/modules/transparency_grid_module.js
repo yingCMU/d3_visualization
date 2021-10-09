@@ -68,9 +68,36 @@ function create_grid(label_data, name_dict) {
         }
         idx++ // gaps
     }
+    var horizontal_lines = []
+    for (var l = 0; l < num_of_grid_layers; l++) {
+        horizontal_lines.push([
+            [-total_grid_width / 2 - block_width, l * block_height - total_grid_height / 2+block_height],
+            [total_grid_width / 2+ block_width, l * block_height - total_grid_height / 2+block_height]
+        ])
+    }
+// draw horizontal dotted lines
+    svg
+        .selectAll("path")
+        .data(horizontal_lines)
+        .enter()
+        .append("path")
+        .attr("d", function (d) {
+            return d3.line()(d)
+        })
+        .attr("id", function (d) {
+            return "id_line";
+        }).attr("stroke", "white")
+        .style("stroke-dasharray", ("1, 2"))
+        .style("stroke-width", "2px")
+        .style("opacity", 0.3)
+
+    for(var r = 3; r < num_of_labels+3; r++){
+        creat_label_images(400,lable_row_to_grid_index,r, svg)
+    }
     return lable_row_to_grid_index
 
 }
+
 function show_grid(opacity, transition_time, lable_row_to_grid_index) {
     if (opacity > 0) {
         for (const [row, grid_idx] of Object.entries(lable_row_to_grid_index)) {
@@ -100,10 +127,28 @@ function label_transform(transition_time, label_row, grid_idx) {
         .duration(transition_time * 3)
         .attr("transform", "translate(" + svg_top_cell.attr('x') + "," + (-total_grid_height / 2 - block_height * 0.7) + ")")
 }
+function creat_label_images(transition_time, lable_row_to_grid_index, label_row, svg) {
+    var grid_idx = lable_row_to_grid_index[label_row]
+    var svg_top_cell = d3.select("#id_rect_0-" + grid_idx)
+    svg
+        .append('svg:image').raise()
+        .attr('xlink:href', '../data/images/labels/' + label_row + '.png')
+        .attr("x", 0)
+        .attr("y", 0)
+        .attr('width', label_width)
+        .attr('height', label_height)
+        .attr('id', 'id_label_img_' + label_row)
+        .attr('class', 'label_class')
+        .style("opacity", 0.6)
+        // .attr("fill", 'red')
+        .transition()
+        .duration(transition_time * 3)
+        .attr("transform", "translate(" + svg_top_cell.attr('x') + "," + (-total_grid_height / 2 - block_height * 0.7) + ")")
+}
 function transparency_grid_index_text() {
     var left_top_cell = d3.select("#id_rect_0-0")
     for (var r = 0; r < 5; ++r) {
-        var left_cell = d3.select("#id_rect_"+r+"-0")
+        var left_cell = d3.select("#id_rect_" + r + "-0")
         d3.select("#id_g_grid")
             .append("span").raise()
             .text("Transparency-" + r)
@@ -114,8 +159,8 @@ function transparency_grid_index_text() {
             .attr("stroke", "white")
             .style("opacity", 1)
             .transition()
-            // .duration(transition_time * 3)
-            // .attr("transform", "translate(" + (left_top_cell.attr('x') - block_width) + "," + left_cell.attr('y') + ")")
+        // .duration(transition_time * 3)
+        // .attr("transform", "translate(" + (left_top_cell.attr('x') - block_width) + "," + left_cell.attr('y') + ")")
     }
 }
 export { create_grid, show_grid, label_transform, transparency_grid_index_text };

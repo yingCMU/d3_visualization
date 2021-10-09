@@ -46,6 +46,24 @@
 					depth: 1.5,
 					maxSpeed: 0.01
 				});
+				TagCanvas.Start('myCanvas2', 'tags2', {
+					textColour: 'red',
+					// outlineColour: 'black',
+					// bgColour: 'black',
+					reverse: true,
+					// noMouse: true,
+					depth: 1.5,
+					maxSpeed: 0.01
+				});
+				TagCanvas.Start('myCanvas3', 'tags3', {
+					textColour: 'green',
+					// outlineColour: 'black',
+					// bgColour: 'black',
+					reverse: true,
+					// noMouse: true,
+					depth: 1.5,
+					maxSpeed: 0.01
+				});
 				// , function (allText) {
 				// 	for (var i = 0; i < allText.length; i++) {
 				// 		var new_li = document.createElement('li')
@@ -66,10 +84,13 @@
 <body class="background">
 	<h1>144 Survey Responses</h1>
 	<div id="myCanvasContainer">
-		<canvas width=1500 height=900 id="myCanvas" fillStyle="black">
+		<canvas width=900 height=600 id="myCanvas" fillStyle="black">
 			<p>Anything in here will be replaced on browsers that support the canvas element</p>
 		</canvas>
-		<canvas width=1500 height=900 id="myCanvas2" fillStyle="black">
+		<canvas width=900 height=600 id="myCanvas2" fillStyle="black">
+			<p>Anything in here will be replaced on browsers that support the canvas element</p>
+		</canvas>
+		<canvas width=900 height=600 id="myCanvas3" fillStyle="black">
 			<p>Anything in here will be replaced on browsers that support the canvas element</p>
 		</canvas>
 	</div>
@@ -78,31 +99,27 @@
 	</div> -->
 	<div id="tags">
 		<ul id='id_ul'>
-			<li><a>Meaning & Understand</li></a>
-			<li><a>What they mean</li></a>
-			<li><a class="words">A QR code or way to look up what the rating was for the product <br>
+			<li><a class="a-tags">Meaning & Understand</li></a>
+			<li><a class="a-tags">What they mean</li></a>
+			<li><a class="a-tags">A QR code or way to look up what the rating was for the product <br>
 				the label was on (and remind people what the certification even means)</li></a>
-			<li><a>A link of some sort to more info</li></a>
-			<li><a>Consider a QR code or link which goes to a landing page about the code.</li></a>
-			<li><a>Which one it helps climate, or environment, social, clearly.<br> If more then one state all. Not vague
+			<li><a  class="a-tags">A link of some sort to more info</li></a>
+			<li><a  class="a-tags">Consider a QR code or link which goes to a landing page about the code.</li></a>
+			<li><a  class="a-tags">Which one it helps climate, or environment, social, clearly.<br> If more then one state all. Not vague
 			</li></a>
-			<li><a>Help me decide which is best for the planet</li></a>
-			<li><a>A QR code with more info</li></a>
-			<li><a>About sustainability, fair trade and supports local communities</li></a>
-			<li><a>Carbon impact</li></a>
-			<li><a>What they are and do.</li></a>
-			<li><a>Organic practices and nontoxic ingredients</li></a>
-			<li><a>Specific information about workers rights + environment.</li></a>
-			<li><a>Specifics</li></a>
-			<li><a>Mission, goal, what you’re offsetting or changing</li></a>
-			<li><a>Who</li></a>
-			<li><a>Who certifies them?</li></a>
-			<li><a>Who funds it and if it has legitimate third party inspectors</li></a>
-			<li><a>Payer backing them</li></a>
-			<li><a>If this is an outside certification program or <br> just something the company is alledging</li></a>
-			<li><a>Agency that verifies</li></a>
-			<li><a>Who they are</li></a>
-			<li><a>Who certifies and to what standards</li></a>
+			<li><a  class="a-tags">Help me decide which is best for the planet</li></a>
+			<li><a  class="a-tags">A QR code with more info</li></a>
+			<li><a  class="a-tags">About sustainability, fair trade and supports local communities</li></a>
+			<li><a  class="a-tags">Carbon impact</li></a>
+			<li><a  class="a-tags">What they are and do.</li></a>
+			<li><a  class="a-tags">Organic practices and nontoxic ingredients</li></a>
+			<li><a  class="a-tags">Specific information about workers rights + environment.</li></a>
+			<li><a  class="a-tags">Specifics</li></a>
+			<li><a  class="a-tags">Mission, goal, what you’re offsetting or changing</li></a>
+			<li><a class="a-tags">A link of some sort to more info</li></a>
+			<li><a class="a-tags">Consider a QR code or link which goes to a landing page about the code.</li></a>
+			<li><a class="a-tags">Which one it helps climate, or environment, social, clearly.<br> If more then one state all. Not vague
+			<!--
 			<li><a>Effectiveness</li></a>
 			<li><a>Quantified parameters of what they signify.</li></a>
 			<li><a>How do they proceed to deliver a label?</li></a>
@@ -118,42 +135,62 @@
 			<li><a>A whole process review from start of the product to the end.</li></a>
 			<li><a>Specific measures. How are criteria determined.</li></a>
 			<li><a>Who is distributing the labels and what are the criteria of label standardization</li></a>
-			<li><a>Effort & Trust</li></a>
-			<li><a>How is this product qualified to earn this</li></a>
-			<li><a>That these brands made an effort</li></a>
-			<li><a>Their contribution to protecting the environment and human workers.</li></a>
-			<li><a>Still hard to trust any of them without a sufficient background & good data.</li></a>
-			<li><a>Hell, turns out the recycling symbol is a plastic lobbiest <br> achievement and is practically meaningless
-			on plastics. <br>You’re going to get consumer distrust or apathy without a good way to help people
-			understand</li></a>
-			<li><a>Whether they truly mean a product is better <br> for the environment and/or society and how.</li></a>
-			<li><a>What does the product or manufacturer/distributor <br> do that DIRECTLY reduces negative impacts (carbon
-					trading doesnt count)?</li></a>
-			<li><a>Eco Friendly compliance info</li></a>
-			<li><a>I look for certications that are specific and <br> which I can verify through other sources such as the
-					EWG or NRDC</li></a>
-			<li><a>Peace of mind that the companies who earned them are doing the right thing for the planet</li></a>
-			<li><a>It’s frustrating how often companies lie about <br>this kind of thing - remember when a bunch of cocoa
-				<br>companies promised no to phase out child slavery by 2020?</li></a>
-			<li><a>Impact</li></a>
-			<li><a>Environmental friendly, humanistic</li></a>
-			<li><a>Ups:how many carbon neutral miles (current data)</li></a>
-			<li><a>Who they serve and how their use benefits people <br> and the environment with real world examples.</li>
-			</a>
-			<li><a>How it’s impacting the environment to create that product</li></a>
-			<li><a>Any of carbon emissions reduced</li></a>
-			<li><a>Stats</li></a>
-			<li><a>specific statistics</li></a>
-			<li><a>specific examples of how they’re achieving <br> what they say they are. Tree-planting is a cop out</li>
-			</a>
-			<li><a>That using any of these products, I am doing <br> something fot the good of the enviornment.</li></a>
-			<li><a>My personal impact over one year</li></a>
-			<li><a>How they benefit the global community</li></a>
-			<li><a>Quantitative info, comparison to others</li></a>
-			<li><a>How environmentally friendly and socially <br> responsible a company or product is</li></a>
-			<li><a>That it actually worked</li></a>
+
+			 -->
 		</ul>
 	</div>
+	<div id="tags2">
+		<ul id='id_ul'>
+			<!-- <li><a class="a-tags2">Who</li></a> -->
+			<li><a class="a-tags2">Who certifies them?</li></a>
+			<li><a class="a-tags2">Who funds it and if it has legitimate third party inspectors</li></a>
+			<li><a class="a-tags2">Payer backing them</li></a>
+			<li><a class="a-tags2">If this is an outside certification program or <br> just something the company is alledging</li></a>
+			<li><a class="a-tags2">Agency that verifies</li></a>
+			<li><a class="a-tags2">Who they are</li></a>
+			<li><a class="a-tags2">Who certifies and to what standards</li></a>
+			<!-- <li><a>Effort & Trust</li></a> -->
+			<li><a class="a-tags2">How is this product qualified to earn this</li></a>
+			<li><a class="a-tags2">That these brands made an effort</li></a>
+			<li><a class="a-tags2">Their contribution to protecting the environment and human workers.</li></a>
+			<li><a class="a-tags2">Still hard to trust any of them without a sufficient background & good data.</li></a>
+			<li><a class="a-tags2">Hell, turns out the recycling symbol is a plastic lobbiest <br> achievement and is practically meaningless
+			on plastics. <br>You’re going to get consumer distrust or apathy without a good way to help people
+			understand</li></a>
+			<li><a class="a-tags2">Whether they truly mean a product is better <br> for the environment and/or society and how.</li></a>
+			<li><a class="a-tags2">What does the product or manufacturer/distributor <br> do that DIRECTLY reduces negative impacts (carbon
+					trading doesnt count)?</li></a>
+			<li><a class="a-tags2">Eco Friendly compliance info</li></a>
+			<li><a class="a-tags2">I look for certications that are specific and <br> which I can verify through other sources such as the
+					EWG or NRDC</li></a>
+			<li><a class="a-tags2">Peace of mind that the companies who earned them are doing the right thing for the planet</li></a>
+			<li><a class="a-tags2">It’s frustrating how often companies lie about <br>this kind of thing - remember when a bunch of cocoa
+				<br>companies promised no to phase out child slavery by 2020?</li></a>
+			</ul>
+	</div>
+	<div id="tags3">
+		<ul id='id_ul'>
+			<!-- <li><a>Impact</li></a> -->
+			<li><a class="a-tags3">Environmental friendly, humanistic</li></a>
+			<li><a class="a-tags3">Ups:how many carbon neutral miles (current data)</li></a>
+			<li><a class="a-tags3">Who they serve and how their use benefits people <br> and the environment with real world examples.</li>
+			</a>
+			<li><a class="a-tags3">How it’s impacting the environment to create that product</li></a>
+			<li><a class="a-tags3">Any of carbon emissions reduced</li></a>
+			<li><a class="a-tags3">Stats</li></a>
+			<li><a class="a-tags3">specific statistics</li></a>
+			<li><a class="a-tags3">specific examples of how they’re achieving <br> what they say they are. Tree-planting is a cop out</li>
+			</a>
+			<li><a class="a-tags3">That using any of these products, I am doing <br> something fot the good of the enviornment.</li></a>
+			<li><a class="a-tags3">My personal impact over one year</li></a>
+			<li><a class="a-tags3">How they benefit the global community</li></a>
+			<li><a class="a-tags3">Quantitative info, comparison to others</li></a>
+			<li><a class="a-tags3">How environmentally friendly and socially <br> responsible a company or product is</li></a>
+			<li><a class="a-tags3">That it actually worked</li></a>
+		</ul>
+
+	</div>
+
 	<script type="text/javascript">
 		const canvas = document.getElementById('myCanvas');
 		const ctx = canvas.getContext('2d');
