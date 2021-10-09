@@ -419,18 +419,19 @@ function load_industry_pie(label_data) {
         .attr("id", function (d) {
             return "id_arch_" + d.Row;
         }).attr("stroke", function (d) {
-             console.log("pie_stroke",d.Row ,  label_data)
             // }
             var row_color= color(d.Row);
-            const rgb = hexToRgb(row_color);
+            var rgb = hexToRgb(row_color);
             if (rgb.length !== 3) {
               alert('Invalid format!');
             }
 
-            const waht_color = new Color(rgb[0], rgb[1], rgb[2]);
-            const solver = new Solver(waht_color);
-            const result = solver.solve();
+            var what_color = new Color(rgb[0], rgb[1], rgb[2]);
+            var solver = new Solver(what_color);
+            var result = solver.solve();
             row_colors[d.Row] = [row_color, result.filter]
+            console.log(d.Row,rgb[0],rgb[1],rgb[2], row_colors[d.Row])
+
             return row_color
         })
         .style("stroke-width", "6px")
