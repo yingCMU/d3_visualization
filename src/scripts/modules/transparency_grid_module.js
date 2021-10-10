@@ -192,22 +192,54 @@ function creat_label_images(transition_time, lable_row_to_grid_index, label_row,
         .duration(transition_time * 3)
         .attr("transform", "translate(" + svg_top_cell.attr('x') + "," + (-total_grid_height / 2 - block_height * 0.7) + ")")
 }
-function transparency_grid_index_text() {
+function transparency_grid_index_text(svg) {
+    var transparency_criteria = ["Standardization", "Quantified Data", "Awardee Information", "Full Lifecycle", "Enforcement"]
+
     var left_top_cell = d3.select("#id_rect_0-0")
+    var svg = d3.select("#id_g_grid")
+   var text_data = []
     for (var r = 0; r < 5; ++r) {
         var left_cell = d3.select("#id_rect_" + r + "-0")
-        d3.select("#id_g_grid")
-            .append("span").raise()
-            .text("Transparency-" + r)
-            .attr("id", "id_trans_index" + r)
-            .attr("x", (left_top_cell.attr('x') - block_width))
-            .attr("y", left_cell.attr('y'))
-            .attr("stroke-width", "40px")
-            .attr("stroke", "white")
-            .style("opacity", 1)
-            .transition()
-        // .duration(transition_time * 3)
-        // .attr("transform", "translate(" + (left_top_cell.attr('x') - block_width) + "," + left_cell.attr('y') + ")")
+        var y = left_cell.attr('y')
+        text_data.push(
+            {
+                "text":transparency_criteria[r],
+                "id":"id_trans_index_" + r,
+                "x": (left_top_cell.attr('x') - block_width),
+                "y": parseInt(y) + block_height*3/4
+        }
+        )
     }
+    //     var left_cell = d3.select("#id_rect_" + r + "-0")
+    //     d3.select("#id_g_grid")
+    //         .append("span").raise()
+    //         .text("Transparency-" + r)
+    //         .attr("id", "id_trans_index" + r)
+    //         .attr("x", (left_top_cell.attr('x') - block_width))
+    //         .attr("y", left_cell.attr('y'))
+    //         .attr("stroke-width", "15px")
+    //         .attr("stroke", "white")
+    //         .style("opacity", 1)
+    //         .transition()
+    //     }
+    debugger
+            svg
+            .selectAll('allLabels1')
+            .data(text_data)
+            .enter()
+            .append('text')
+            .attr('id', function (d) {return d.id})
+            .text(function (d) { return d.text})
+            .attr("x", function (d) { return d.x})
+            .attr("y", function (d) { return d.y})
+            .attr("fill", "white")
+            .style('font', "15px Helvetica Neue")
+            .style('text-anchor', 'end')
+debugger
+    // d3.select("#id_g_pie")
+    //     .selectAll("path_arch")
+    //     .data(label_data)
+    //     .enter()
+    //     .append("path")
 }
 export { create_grid, show_grid, label_transform, transparency_grid_index_text };

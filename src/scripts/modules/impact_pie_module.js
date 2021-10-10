@@ -15,8 +15,6 @@ function create_impact_pie(row_colors) {
         // append the svg object to the div called 'id_impact_pie'
         var svg = d3.select("#id_industry_pie")
             .select("svg")
-            // .attr("width", width)
-            // .attr("height", height)
             .append("g")
         .style("opacity", 0)
             .attr('id', 'id_g_pie_impact')
@@ -131,7 +129,6 @@ function create_impact_pie(row_colors) {
             .attr("id", function (d) {
                 return "id_impact_arch_" + d.Row;
             }).attr("stroke",function (d) {
-                debugger
                 return row_colors[d.Row][0]
             }  )//"orange")
             .style("stroke-width", "6px")
