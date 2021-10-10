@@ -43,7 +43,7 @@
 					// bgColour: 'black',
 					reverse: true,
 					// noMouse: true,
-					depth: 1.5,
+					depth: 0.9,
 					maxSpeed: 0.01
 				});
 				TagCanvas.Start('myCanvas2', 'tags2', {
@@ -52,7 +52,7 @@
 					// bgColour: 'black',
 					reverse: true,
 					// noMouse: true,
-					depth: 1.5,
+					depth: 0.9,
 					maxSpeed: 0.01
 				});
 				TagCanvas.Start('myCanvas3', 'tags3', {
@@ -61,7 +61,7 @@
 					// bgColour: 'black',
 					reverse: true,
 					// noMouse: true,
-					depth: 1.5,
+					depth: 0.9,
 					maxSpeed: 0.01
 				});
 				// , function (allText) {
@@ -84,13 +84,13 @@
 <body class="background">
 	<h1>144 Survey Responses</h1>
 	<div id="myCanvasContainer">
-		<canvas width=900 height=600 id="myCanvas1" fillStyle="black" class="word_cloud_canvas">
+		<canvas width=600 height=600 id="myCanvas1" fillStyle="black" class="word_cloud_canvas">
 			<p>Anything in here will be replaced on browsers that support the canvas element</p>
 		</canvas>
-		<canvas width=900 height=600 id="myCanvas2" fillStyle="black" class="word_cloud_canvas">
+		<canvas width=600 height=600 id="myCanvas2" fillStyle="black" class="word_cloud_canvas">
 			<p>Anything in here will be replaced on browsers that support the canvas element</p>
 		</canvas>
-		<canvas width=900 height=600 id="myCanvas3" fillStyle="black" class="word_cloud_canvas">
+		<canvas width=600 height=600 id="myCanvas3" fillStyle="black" class="word_cloud_canvas">
 			<p>Anything in here will be replaced on browsers that support the canvas element</p>
 		</canvas>
 	</div>
@@ -192,7 +192,9 @@
 	</div>
 
 	<script type="text/javascript">
+		var area_width = 600
 		const canvas_width = (width-margin_horizontal*3)/2
+		const margin_left_right = (width-area_width*3)/2
 		console.log(width, canvas_width, margin_horizontal)
 		var canvas = document.getElementById('myCanvas1');
 		var canvas2 = document.getElementById('myCanvas2');
@@ -200,12 +202,13 @@
 		// canvas.style.width = canvas_width+'px';
 		// canvas2.style.width = canvas_width+'px';
 		// canvas3.style.width = canvas_width+'px';
+		canvas.style.width = area_width+'px';
 		canvas.style.top = margin_horizontal+'px';
-		canvas.style.left = (width-900)/2+'px';
+		canvas.style.left = (width-area_width)/2+'px';
 		canvas2.style.bottom = margin_horizontal+'px';
-		canvas2.style.left = margin_horizontal+'px';
+		canvas2.style.left = margin_left_right+'px';
 		canvas3.style.bottom = margin_horizontal+'px';
-		canvas3.style.right = margin_horizontal+'px';
+		canvas3.style.right = margin_left_right+'px';
 		// canvas.setAttribute('width', 100)
 		// const ctx = canvas.getContext('2d');
 		// var my_gradient = ctx.createLinearGradient(0, 0, 0, 170);

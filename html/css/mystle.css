@@ -45,12 +45,10 @@ circle {
     float:right;
   }
 
-.d3_viz {
+  .d3_viz {
     width: 100%; /* Width of the outside container */
-    /* float:left; */
-    position:absolute;
+    float:left;
   }
-
   /* The slider itself */
   .slider {
     -webkit-appearance: none;  /* Override default CSS styles */
@@ -140,16 +138,9 @@ circle {
   /* textLength:6em */
 }
 .word_cloud_canvas {
-  border: 1px solid white;
+  /* border: 1px solid white; */
   border-radius:600px;
   margin: 10px;
   position:absolute
-  /* border-radius:100px / 50px; */
-}
-.word_cloud_canvas1 {
-  border: 2px solid white;
-  border-radius:600px;
-  margin: 50pt;
-  position:absolute;
   /* border-radius:100px / 50px; */
 }
