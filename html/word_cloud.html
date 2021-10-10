@@ -10,7 +10,7 @@
 	<script type="text/javascript">
 		const width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
 		const height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
-		const margin_horizontal = height * 0.01
+		const margin_horizontal = 10 //height * 0.01
 		function readTextFile(file) {
 			var rawFile = new XMLHttpRequest();
 			rawFile.open("GET", file, false);
@@ -39,30 +39,35 @@
 			try {
 				TagCanvas.Start('myCanvas1', 'tags', {
 					textColour: 'white',
-					// outlineColour: 'black',
-					// bgColour: 'black',
+					outlineColour: 'black',
 					reverse: true,
 					// noMouse: true,
+					globalAlpha: 0.2,
+					textFont: "Helvetica Neue",
+					textHeight: 15,
 					depth: 0.9,
-					maxSpeed: 0.01
+					maxSpeed: 0.02
 				});
 				TagCanvas.Start('myCanvas2', 'tags2', {
 					textColour: 'white',
-					// outlineColour: 'black',
+					outlineColour: 'black',
 					// bgColour: 'black',
 					reverse: true,
 					// noMouse: true,
 					depth: 0.9,
-					maxSpeed: 0.01
+					textFont: "Helvetica Neue",
+
+					maxSpeed: 0.02
 				});
 				TagCanvas.Start('myCanvas3', 'tags3', {
 					textColour: 'white',
-					// outlineColour: 'black',
+					outlineColour: 'black',
 					// bgColour: 'black',
 					reverse: true,
+					textFont: "Helvetica Neue",
 					// noMouse: true,
 					depth: 0.9,
-					maxSpeed: 0.01
+					maxSpeed: 0.02
 				});
 				// , function (allText) {
 				// 	for (var i = 0; i < allText.length; i++) {
@@ -81,10 +86,10 @@
 	</script>
 </head>
 
-<body class="background">
+<body class="word_cloud_background">
 	<h1>144 Survey Responses</h1>
 	<div id="myCanvasContainer">
-		<canvas width=600 height=600 id="myCanvas1" fillStyle="black" class="word_cloud_canvas">
+		<canvas width=600 height=600 id="myCanvas1" fillStyle="white" globalAlpha="0.2" class="word_cloud_canvas">
 			<p>Anything in here will be replaced on browsers that support the canvas element</p>
 		</canvas>
 		<canvas width=600 height=600 id="myCanvas2" fillStyle="black" class="word_cloud_canvas">
@@ -193,16 +198,11 @@
 
 	<script type="text/javascript">
 		var area_width = 600
-		const canvas_width = (width-margin_horizontal*3)/2
-		const margin_left_right = (width-area_width*3)/2
-		console.log(width, canvas_width, margin_horizontal)
+		const margin_left_right = (width-area_width*Math.PI*0.85)/2
+		// const  = (width-area_width*2.6)/2
 		var canvas = document.getElementById('myCanvas1');
 		var canvas2 = document.getElementById('myCanvas2');
 		var canvas3 = document.getElementById('myCanvas3');
-		// canvas.style.width = canvas_width+'px';
-		// canvas2.style.width = canvas_width+'px';
-		// canvas3.style.width = canvas_width+'px';
-		canvas.style.width = area_width+'px';
 		canvas.style.top = margin_horizontal+'px';
 		canvas.style.left = (width-area_width)/2+'px';
 		canvas2.style.bottom = margin_horizontal+'px';
@@ -221,6 +221,29 @@
 		// 		window.location.reload(true);
 		// 	}, 200);
 		// });
+
+const ctx = canvas.getContext('2d');
+
+// Draw background
+ctx.fillStyle = '#FD0';
+ctx.fillRect(0, 0, 75, 75);
+ctx.fillStyle = '#6C0';
+ctx.fillRect(75, 0, 75, 75);
+ctx.fillStyle = '#09F';
+ctx.fillRect(0, 75, 75, 75);
+ctx.fillStyle = '#F30';
+ctx.fillRect(75, 75, 75, 75);
+ctx.fillStyle = '#FFF';
+
+// Set transparency value
+ctx.globalAlpha = 0.2;
+
+// Draw transparent circles
+for (let i = 0; i < 7; i++) {
+  ctx.beginPath();
+  ctx.arc(75, 75, 10 + 10 * i, 0, Math.PI * 2, true);
+  ctx.fill();
+}
 	</script>
 </body>
 

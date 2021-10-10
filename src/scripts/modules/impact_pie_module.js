@@ -5,8 +5,10 @@ function create_impact_pie(row_colors) {
         const label_height = 30
         const label_width = 30;
         const impact_label_color = 'white';
-        const width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
-        const height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+        var width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+        width = 0.92 * width
+        var height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+        height= 0.92* height
         const num_of_layers = latest_year - start_year;
         const margin = 80
 
@@ -21,15 +23,15 @@ function create_impact_pie(row_colors) {
             .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
 
         var impact_index = {
-            "Environment_Energy": 0,
+            "Environment & Energy": 0,
             "Social": 1,
-            "Food_Quality": 2
+            "Food & Quality": 2
         }
         // Create dummy data
         var data = {
-            "Environment_Energy": 25,
+            "Environment & Energy": 25,
             "Social": 25,
-            "Food_Quality": 25
+            "Food & Quality": 25
         };
         // Compute the position of each group on the pie:
         var pie = d3.pie()
@@ -102,9 +104,9 @@ function create_impact_pie(row_colors) {
 
 
         var memorize_label_count_per_year = {
-            "Environment_Energy": {},
+            "Environment & Energy": {},
             "Social": {},
-            "Food_Quality": {}
+            "Food & Quality": {}
         }
         var estimating_labels_per_impact_per_year = 9;
         var transform_values = {}
@@ -137,6 +139,8 @@ function create_impact_pie(row_colors) {
             // })
             .style("opacity", 0.6)
             .on("mouseover", function (d) {
+          console.log(d.Row,d.Name)
+
                 d3.select(this)
                 .style("stroke", "white")
             })

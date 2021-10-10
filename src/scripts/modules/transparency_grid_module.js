@@ -30,16 +30,18 @@ function get_color_class_color(label, l, row_colors) {
 
 function create_grid(label_data, name_dict, row_colors) {
     var sorted_label_data = sort_label_by_body(label_data, name_dict)
-    const width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
-    const height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
-
+    var width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+    var height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
     var svg = d3.select("#id_industry_pie")
         .select("svg")
         .append("g")
         .attr("id", "id_g_grid")
         .style("opacity", 0)
-        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+        .attr("transform", "translate(" + (width / 2 + block_width*3) + "," + height / 2 + ")");
     var idx = 0
+    // width = 0.89 * width
+    // height= 0.89* height
+
     var lable_row_to_grid_index = {}
     for (const [body, label_array] of Object.entries(sorted_label_data)) {
         for (var i = 0; i < label_array.length; ++i) {
@@ -48,7 +50,6 @@ function create_grid(label_data, name_dict, row_colors) {
             for (var l = 0; l < num_of_grid_layers; l++) {
                 var label_class = get_color_class_color(label, l ,row_colors)
                  var hex_color=row_colors[label.Row][0]
-        // console.log('filter_color', filter_color)
 
                 svg
                     .append('rect').attr('id', 'id_rect_' + l + '-' + idx)
@@ -179,11 +180,10 @@ function show_grid(opacity, transition_time, lable_row_to_grid_index) {
             .select("#id_g_grid").raise()
             .transition().duration(transition_time).style("opacity", opacity);
     } else {
-        debugger
         d3.select("#id_industry_pie")
             .select("svg")
             .select("#id_g_grid").lower()
-            .transition().duration(transition_time).style("opacity", opacity)//.remove();
+            .transition().duration(transition_time).style("opacity", opacity).remove();
     }
 }
 
