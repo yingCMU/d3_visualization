@@ -97,8 +97,10 @@
 				return
 			}
 
-			show_pie(new_value == 1 ? 1 : 0, new_value == 1 ? 1 : 0, transition_time * 2, industry_pie_transform_values)
+			show_pie(new_value == 1 ? 1 : 0, new_value == 1 ? 1 : 0, transition_time * 2, industry_pie_transform_values,["id_g_pie","id_pie_text"])
 			show_grid(new_value == 50 ? 1 : 0, transition_time * 2, grid_index)
+			show_pie(new_value == 100 ? 1 : 0, new_value == 1 ? 1 : 0, transition_time * 2, industry_pie_transform_values,["id_g_pie_impact","id_impact_pie_text"])
+
 			// show_venn(new_value == 100 ? 0.45 : 0, transition_time * 2)
 			// d3
 			//     .selectAll('#id_dimensions').transition().duration(transition_time).style("opacity", new_value ==100? 0.4:0);

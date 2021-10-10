@@ -359,7 +359,7 @@ function load_industry_pie(label_data) {
             .enter()
             .append('path')
             .attr('d', arc)
-            .attr('id', 'pie_id')
+            .attr('id', 'id_industry_pie')
             .attr('fill', function (d) {
                 return "white"
                 // return i == 0 ? color(d.data.key) : "white";
@@ -491,9 +491,12 @@ function get_arch_angles_from_pie(data_ready, industry_index, d) {
     }
 
 }
-function show_pie(opacity, label_opacity, transition_time, industry_pie_transform_values) {
-    d3.selectAll('#id_g_pie').raise().transition().duration(transition_time).style("opacity", opacity);
-    d3.selectAll('#id_pie_text').raise().transition().duration(transition_time).style("opacity", label_opacity);
+function show_pie(opacity, label_opacity, transition_time, industry_pie_transform_values,ids) {
+    ids.forEach(id =>
+      d3.selectAll('#'+id).raise().transition().duration(transition_time).style("opacity", opacity)
+    );
+    // d3.selectAll('#id_g_pie').raise().transition().duration(transition_time).style("opacity", opacity);
+    // d3.selectAll('#id_pie_text').raise().transition().duration(transition_time).style("opacity", label_opacity);
     // if (opacity > 0) {
     //     for (const [row, transform_value] of Object.entries(industry_pie_transform_values)) {
     //         pie_label_transform(transition_time, row, transform_value)

@@ -14,10 +14,11 @@ function create_impact_pie(row_colors) {
 
         // append the svg object to the div called 'id_impact_pie'
         var svg = d3.select("#id_industry_pie")
-            .append("svg")
-            .attr("width", width)
-            .attr("height", height)
+            .select("svg")
+            // .attr("width", width)
+            // .attr("height", height)
             .append("g")
+        .style("opacity", 0)
             .attr('id', 'id_g_pie_impact')
             .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
 
@@ -59,7 +60,7 @@ function create_impact_pie(row_colors) {
                 .enter()
                 .append('path')
                 .attr('d', arc)
-                .attr('id', 'pie_id')
+                .attr('id', 'id_impact_pie')
                 .attr('fill', function (d) {
                     return "white"
                     // return i == 0 ? color(d.data.key) : "white";
@@ -75,7 +76,7 @@ function create_impact_pie(row_colors) {
             .data(data_ready)
             .enter()
             .append('text')
-            .attr('id', 'id_pie_text')
+            .attr('id', 'id_impact_pie_text')
             .text(function (d) { console.log(d.data.key); return d.data.key })
             .attr('transform', function (d) {
                 var pos = outerArc.centroid(d);
@@ -139,14 +140,8 @@ function create_impact_pie(row_colors) {
             // })
             .style("opacity", 0.6)
             .on("mouseover", function (d) {
-                // sort all the areas relative to the current item
-                // Display a tooltip with the current size
-                tooltip.transition().duration(400).style("opacity", .9);
-                tooltip.text(d.Name);
-
                 d3.select(this)
-                    .style("fill-opacity", .4 )
-                    .style("stroke-opacity", 0.6);
+                .style("stroke", "white")
             })
 
             .on("mousemove", function () {
@@ -155,11 +150,9 @@ function create_impact_pie(row_colors) {
             })
 
             .on("mouseout", function (d) {
-                tooltip.transition().duration(400).style("opacity", 0);
-                var selection = d3.select(this).transition("tooltip").duration(400);
                 d3.select(this)
-                    .style("fill-opacity",  1)
-                    .style("stroke-opacity", 1);
+                .transition().duration(400)
+                .style("stroke", row_colors[d.Row][0])
             });
 
            // var myimage = svg
