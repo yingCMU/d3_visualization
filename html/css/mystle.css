@@ -47,7 +47,8 @@ circle {
 
 .d3_viz {
     width: 100%; /* Width of the outside container */
-    float:left;
+    /* float:left; */
+    position:absolute;
   }
 
   /* The slider itself */
@@ -132,4 +133,23 @@ circle {
     border-radius: 8px;
     opacity: 0;
 }
-/* .svgimg { fill: red; } */
+
+.grid_text {
+  overflow-wrap: break-word;
+  width: 100;
+  /* textLength:6em */
+}
+.word_cloud_canvas {
+  border: 1px solid white;
+  border-radius:600px;
+  margin: 10px;
+  position:absolute
+  /* border-radius:100px / 50px; */
+}
+.word_cloud_canvas1 {
+  border: 2px solid white;
+  border-radius:600px;
+  margin: 50pt;
+  position:absolute;
+  /* border-radius:100px / 50px; */
+}

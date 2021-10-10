@@ -3,8 +3,16 @@ function sort_label_by_body(label_data, name_dict) {
     label_data.forEach(label => {
         sorted_data[name_dict[label.Body.trim()]].push(label)
     });
-    return sorted_data;
+
+    for (const [body, label_array] of Object.entries(sorted_data)) {
+        label_array.sort(function(a, b) {
+            return parseInt(b.Total) - parseInt(a.Total);
+          });
+    }
+    return sorted_data
 }
+
+
 
 function get_color_class_color(label, l, row_colors) {
 
@@ -58,6 +66,7 @@ function create_grid(label_data, name_dict, row_colors) {
             let final_filter_color = filter_color.replace("filter:", "").replace(";","")
             creat_label_images(400, lable_row_to_grid_index, label.Row, svg,final_filter_color )
         }
+        idx++
     }
     var horizontal_lines = []
     for (var l = 0; l < num_of_grid_layers; l++) {
@@ -88,8 +97,8 @@ function create_grid(label_data, name_dict, row_colors) {
 
 }
 function expand_one_grid(lable_row_to_grid_index) {
-    var row_number = 12 // energy star
-    var grid_idx = lable_row_to_grid_index[row_number]
+    var grid_idx = lable_row_to_grid_index[mock_grid_row_num]
+    console.log('mock_grid_index:',grid_idx)
     // var all_grids = [
         d3.select("#id_rect_0-" + grid_idx).on("mouseover",expand_on_click).on("mouseout",revert )
         d3.select("#id_rect_1-" + grid_idx).on("mouseover",expand_on_click).on("mouseout",revert )
@@ -107,35 +116,53 @@ function expand_one_grid(lable_row_to_grid_index) {
     //     // .style("stroke-opacity", 0.6);
     // })
     function expand_on_click() {
+        var transition_time = 400*2
+        var text_data = []
+
         for (var l = 0; l < num_of_grid_layers; l++) {
             var selected =  d3.select("#id_rect_"+l+"-" + grid_idx).raise()
-            selected.transition().duration(400)
-                    .attr("width", 6 * block_width)
-                // .style("stroke-opacity", 0.6);
+            selected.transition().duration(transition_time)
+                    .attr("width", 6 * block_width - grid_block_filled_width)
+            var y = selected.attr('y')
+                    text_data.push(
+                        {
+                            "text": mock_grid_text[l],
+                            "id":"id_trans_grid_text_" + l,
+                            "x": parseInt(selected.attr('x')) + block_width/2,
+                            "y": parseInt(y) + block_height/2
+                    }
+            )
         }
         d3.selectAll("#id_line").raise()
-        // for (var i = grid_idx + 1; i < num_of_labels; i++) {
-        //     var selected_img =  d3.select("#id_label_img_"+ l)
-        //     var original_x = selected_img.attr("x")
-        //     selected_img.transition().duration(400)
-        //     .attr("x", original_x+ block_width * 3 )
-        //     for (var l =0; l < num_of_grid_layers; l++) {
-        //         var selected =  d3.select("#id_rect_"+l+"-" + i).raise()
-        //         var x = selected.attr('x')
-        //         var y = selected.attr('y')
-        //         selected.transition().duration(400)
-        //         .attr('x', block_width * 5+ x)
-        //         // .attr("transform", "translate(" +  x+ block_width * 3+ "," +y+")");
-        //     }
-        // }
+        // var svg = d3.select("#id_g_grid")
+        // svg.selectAll('allLabels1')
+        //         .data(text_data)
+        //         .enter()
+        //         .append('text')
+        //         .attr('class',  "grid_text")
+        //         // .attr('textLength',  "10em")
+        //         .style("fill-opacity",0)
+        //         .attr("x", function (d) { return d.x})
+        //         .attr("y", function (d) { return d.y})
+        //         .raise()
+        //         .transition().duration(transition_time)
+
+        //         .attr('id', function (d) {return d.id})
+        //         .text(function (d) { return d.text})
+        //         .style("fill-opacity",1)
+
+        //         .attr("fill", "white")
+        //         .style('font', "11px Helvetica Neue")
+        //         .style('text-anchor', 'start')
     }
 
     function revert() {
         for (var l = 0; l < num_of_grid_layers; l++) {
             var selected =  d3.select("#id_rect_"+l+"-" + grid_idx).raise()
-            selected.transition().duration(400)
+            selected.transition().duration(transition_time)
                     .attr("width", grid_block_filled_width)
                 // .style("stroke-opacity", 0.6);
+                d3.select("#id_trans_grid_text_" + l).remove()
         }
     }
 
@@ -173,7 +200,6 @@ function label_transform(transition_time, label_row, grid_idx) {
         .attr("transform", "translate(" + svg_top_cell.attr('x') + "," + (-total_grid_height / 2 - block_height * 0.7) + ")")
 }
 function creat_label_images(transition_time, lable_row_to_grid_index, label_row, svg, filter) {
-    console.log('creat_label_images',label_row,filter)
     var grid_idx = lable_row_to_grid_index[label_row]
     var svg_top_cell = d3.select("#id_rect_0-" + grid_idx)
     svg
@@ -186,11 +212,11 @@ function creat_label_images(transition_time, lable_row_to_grid_index, label_row,
         .attr('id', 'id_label_img_' + grid_idx)
         .attr('filter', filter)
         // .attr('class', 'label_class')
-        .style("opacity", 0.6)
+        .style("opacity", 1)
         // .attr("fill", 'red')
         .transition()
         .duration(transition_time * 3)
-        .attr("transform", "translate(" + svg_top_cell.attr('x') + "," + (-total_grid_height / 2 - block_height * 0.7) + ")")
+        .attr("transform", "translate(" + (parseInt(svg_top_cell.attr('x')) - grid_block_filled_width/2) + "," + (-total_grid_height / 2 - block_height * 0.8) + ")")
 }
 function transparency_grid_index_text(svg) {
     var transparency_criteria = ["Standardization", "Quantified Data", "Awardee Information", "Full Lifecycle", "Enforcement"]
@@ -210,19 +236,7 @@ function transparency_grid_index_text(svg) {
         }
         )
     }
-    //     var left_cell = d3.select("#id_rect_" + r + "-0")
-    //     d3.select("#id_g_grid")
-    //         .append("span").raise()
-    //         .text("Transparency-" + r)
-    //         .attr("id", "id_trans_index" + r)
-    //         .attr("x", (left_top_cell.attr('x') - block_width))
-    //         .attr("y", left_cell.attr('y'))
-    //         .attr("stroke-width", "15px")
-    //         .attr("stroke", "white")
-    //         .style("opacity", 1)
-    //         .transition()
-    //     }
-    debugger
+
             svg
             .selectAll('allLabels1')
             .data(text_data)
@@ -235,7 +249,6 @@ function transparency_grid_index_text(svg) {
             .attr("fill", "white")
             .style('font', "15px Helvetica Neue")
             .style('text-anchor', 'end')
-debugger
     // d3.select("#id_g_pie")
     //     .selectAll("path_arch")
     //     .data(label_data)

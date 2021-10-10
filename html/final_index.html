@@ -19,13 +19,16 @@
 		<!-- <div id="id_labels" class="label_svg"> -->
 	</div>
 	<div class="d3_viz" id="id_industry_pie">
-		<div class="slidecontainer">
+		<span class="slidecontainer">
 			<input class="slider" type="range" min="1" max="100" value="1" id="id_slider">
-		</div>
+	</div>
 	</div>
 	</div>
 	<script>
 		const num_of_grid_layers = 5;
+		const mock_grid_row_num = 31
+		const mock_grid_text = [
+			"The USDA organic regulations are the corner stone of WSDA. The organic regulations outline the requirements for organic Operations such as: descriptions of what input materials can be used on an organic farm, the labeling requirements for organic products, and how to resolve any non-compliances  that may be identified", "", "Brenda Book <br> Organic Program Manager", "", "WSDA publishes an Organic Input Material List. Materials on this list have been reviewed by WSDA organic staff and are approved for use in organic agriculture."]
 		var lable_row_to_grid_index
 		var lable_industry_pie_transform_values, row_colors
 		var old_value = 1
@@ -38,7 +41,7 @@
 		var total_grid_width
 		const transition_time = 400
 		var label_data
-		var label_width=20, label_height=50
+		var label_width = 20, label_height = 50
 		var name_dict = {
 			"In": "For-Profit",
 			"Gov": "Goverment",
@@ -97,9 +100,9 @@
 				return
 			}
 
-			show_pie(new_value == 1 ? 1 : 0, new_value == 1 ? 1 : 0, transition_time * 2, industry_pie_transform_values,["id_g_pie","id_pie_text"])
+			show_pie(new_value == 1 ? 1 : 0, new_value == 1 ? 1 : 0, transition_time * 2, industry_pie_transform_values, ["id_g_pie", "id_pie_text"])
 			show_grid(new_value == 50 ? 1 : 0, transition_time * 2, grid_index)
-			show_pie(new_value == 100 ? 1 : 0, new_value == 1 ? 1 : 0, transition_time * 2, industry_pie_transform_values,["id_g_pie_impact","id_impact_pie_text"])
+			show_pie(new_value == 100 ? 1 : 0, new_value == 1 ? 1 : 0, transition_time * 2, industry_pie_transform_values, ["id_g_pie_impact", "id_impact_pie_text"])
 
 			// show_venn(new_value == 100 ? 0.45 : 0, transition_time * 2)
 			// d3
@@ -113,12 +116,12 @@
 			data.shift()
 			num_of_labels = data.length
 			label_data = data
-			total_grid_width = (num_of_labels+2) * block_width
+			total_grid_width = (num_of_labels + 2) * block_width
 
 			lable_industry_pie_transform_values, row_colors = load_industry_pie(label_data)
 			lable_row_to_grid_index = create_grid(label_data, name_dict, row_colors)
 			transparency_grid_index_text()
-		create_impact_pie(row_colors)
+			create_impact_pie(row_colors)
 
 			var rangeInput = document.getElementById("id_slider");
 			rangeInput.addEventListener('mouseup', function () {

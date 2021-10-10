@@ -359,10 +359,9 @@ function load_industry_pie(label_data) {
             .enter()
             .append('path')
             .attr('d', arc)
-            .attr('id', 'id_industry_pie')
+            .attr('id', 'id_industry_pie_'+i)
             .attr('fill', function (d) {
                 return "white"
-                // return i == 0 ? color(d.data.key) : "white";
             })
             .attr("stroke", "white")
             .style("stroke-width", "1px")
@@ -437,7 +436,6 @@ function load_industry_pie(label_data) {
             var solver = new Solver(what_color);
             var result = solver.solve();
             row_colors[d.Row] = [row_color, result.filter]
-            console.log(d.Row,rgb[0],rgb[1],rgb[2], row_colors[d.Row])
 
             return row_color
         })

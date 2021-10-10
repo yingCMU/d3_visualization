@@ -10,7 +10,7 @@
 	<script type="text/javascript">
 		const width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
 		const height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
-		console.log(width, height)
+		const margin_horizontal = height * 0.01
 		function readTextFile(file) {
 			var rawFile = new XMLHttpRequest();
 			rawFile.open("GET", file, false);
@@ -37,7 +37,7 @@
 
 		window.onload = function () {
 			try {
-				TagCanvas.Start('myCanvas', 'tags', {
+				TagCanvas.Start('myCanvas1', 'tags', {
 					textColour: 'white',
 					// outlineColour: 'black',
 					// bgColour: 'black',
@@ -47,7 +47,7 @@
 					maxSpeed: 0.01
 				});
 				TagCanvas.Start('myCanvas2', 'tags2', {
-					textColour: 'red',
+					textColour: 'white',
 					// outlineColour: 'black',
 					// bgColour: 'black',
 					reverse: true,
@@ -56,7 +56,7 @@
 					maxSpeed: 0.01
 				});
 				TagCanvas.Start('myCanvas3', 'tags3', {
-					textColour: 'green',
+					textColour: 'white',
 					// outlineColour: 'black',
 					// bgColour: 'black',
 					reverse: true,
@@ -84,13 +84,13 @@
 <body class="background">
 	<h1>144 Survey Responses</h1>
 	<div id="myCanvasContainer">
-		<canvas width=900 height=600 id="myCanvas" fillStyle="black">
+		<canvas width=900 height=600 id="myCanvas1" fillStyle="black" class="word_cloud_canvas">
 			<p>Anything in here will be replaced on browsers that support the canvas element</p>
 		</canvas>
-		<canvas width=900 height=600 id="myCanvas2" fillStyle="black">
+		<canvas width=900 height=600 id="myCanvas2" fillStyle="black" class="word_cloud_canvas">
 			<p>Anything in here will be replaced on browsers that support the canvas element</p>
 		</canvas>
-		<canvas width=900 height=600 id="myCanvas3" fillStyle="black">
+		<canvas width=900 height=600 id="myCanvas3" fillStyle="black" class="word_cloud_canvas">
 			<p>Anything in here will be replaced on browsers that support the canvas element</p>
 		</canvas>
 	</div>
@@ -192,11 +192,25 @@
 	</div>
 
 	<script type="text/javascript">
-		const canvas = document.getElementById('myCanvas');
-		const ctx = canvas.getContext('2d');
-		var my_gradient = ctx.createLinearGradient(0, 0, 0, 170);
-		my_gradient.addColorStop(0, "black");
-		ctx.fillStyle = my_gradient
+		const canvas_width = (width-margin_horizontal*3)/2
+		console.log(width, canvas_width, margin_horizontal)
+		var canvas = document.getElementById('myCanvas1');
+		var canvas2 = document.getElementById('myCanvas2');
+		var canvas3 = document.getElementById('myCanvas3');
+		// canvas.style.width = canvas_width+'px';
+		// canvas2.style.width = canvas_width+'px';
+		// canvas3.style.width = canvas_width+'px';
+		canvas.style.top = margin_horizontal+'px';
+		canvas.style.left = (width-900)/2+'px';
+		canvas2.style.bottom = margin_horizontal+'px';
+		canvas2.style.left = margin_horizontal+'px';
+		canvas3.style.bottom = margin_horizontal+'px';
+		canvas3.style.right = margin_horizontal+'px';
+		// canvas.setAttribute('width', 100)
+		// const ctx = canvas.getContext('2d');
+		// var my_gradient = ctx.createLinearGradient(0, 0, 0, 170);
+		// my_gradient.addColorStop(0, "black");
+		// ctx.fillStyle = my_gradient
 		// const reload = document.querySelector('#reload');
 
 		// reload.addEventListener('click', () => {
